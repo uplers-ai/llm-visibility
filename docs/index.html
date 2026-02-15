@@ -396,6 +396,153 @@
             margin-top: 60px;
         }
         
+        /* Goals Section */
+        .goals-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 48px;
+        }
+        
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+        
+        .goal-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .goal-card.achieved {
+            border-left: 4px solid var(--success);
+        }
+        
+        .goal-card.in_progress {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .goal-card.far {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .goal-llm {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .goal-status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .goal-status.achieved {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+        }
+        
+        .goal-status.in_progress {
+            background: rgba(255, 165, 2, 0.2);
+            color: var(--warning);
+        }
+        
+        .goal-status.far {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--danger);
+        }
+        
+        .goal-progress {
+            margin: 16px 0;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-primary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill.achieved { background: var(--success); }
+        .progress-fill.in_progress { background: var(--warning); }
+        .progress-fill.far { background: var(--danger); }
+        
+        .goal-metrics {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        
+        .goal-current {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* Monthly Comparison Table */
+        .monthly-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .monthly-table th,
+        .monthly-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .monthly-table th {
+            background: var(--bg-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+        
+        .monthly-table td {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+        
+        .monthly-table tr:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .change-positive {
+            color: var(--success);
+        }
+        
+        .change-negative {
+            color: var(--danger);
+        }
+        
+        .change-neutral {
+            color: var(--text-muted);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             h1 { font-size: 32px; }
@@ -411,7 +558,7 @@
             <h1>Uplers</h1>
             <p class="subtitle">Brand visibility analysis across AI assistants</p>
             <div class="meta-info">
-                <div class="meta-item">Generated: <span>2026-01-04</span></div>
+                <div class="meta-item">Generated: <span>2026-02-15</span></div>
                 <div class="meta-item">Queries: <span>690</span></div>
                 <div class="meta-item">Prompts: <span>44</span></div>
                 <div class="meta-item">Runs/Prompt: <span>3</span></div>
@@ -422,21 +569,321 @@
         <div class="score-grid">
             <div class="score-card primary">
                 <div class="label">Overall Visibility Score</div>
-                <div class="value accent">9.3%</div>
-                <div class="detail">64 mentions across 690 queries</div>
+                <div class="value accent">9.6%</div>
+                <div class="detail">66 mentions across 690 queries</div>
             </div>
             <div class="score-card">
                 <div class="label">Overall Ranking</div>
-                <div class="value danger">#15</div>
-                <div class="detail">out of 966 companies mentioned</div>
+                <div class="value danger">#11</div>
+                <div class="detail">out of 979 companies mentioned</div>
             </div>
             <div class="score-card">
                 <div class="label">Intent Categories</div>
                 <div class="value">11</div>
-                <div class="detail">10 weak spots identified</div>
+                <div class="detail">9 weak spots identified</div>
             </div>
         </div>
         
+        <!-- Weekly/Monthly Changes Section -->
+        <div class="changes-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px;">
+
+            <div class="score-card" style="border-left: 4px solid var(--success);">
+                <div class="label">📊 Weekly Change</div>
+                <div class="value" style="color: var(--success); font-size: 32px;">
+                    📈 +0.3%
+                </div>
+                <div class="detail">Compared to 2026-01-04</div>
+                <div class="detail" style="margin-top: 8px;">
+                    Rank: ↑4 positions
+                </div>
+            </div>
+
+            <div class="score-card" style="border-left: 4px solid var(--text-muted);">
+                <div class="label">📅 Monthly Change</div>
+                <div class="value" style="color: var(--text-secondary); font-size: 24px;">No prior data</div>
+                <div class="detail">Monthly comparison available after 30 days</div>
+            </div>
+
+        </div>
+
+        <!-- Goals Progress Section -->
+        <div class="section-header">
+            <h2>🎯 Goals Progress</h2>
+            <div class="line"></div>
+        </div>
+        
+        <div class="goals-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <span style="font-size: 14px; color: var(--text-muted);">Goal Achievement:</span>
+                    <span style="font-size: 20px; font-weight: 600; margin-left: 8px; color: var(--accent);">0/5 LLMs</span>
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <span style="color: var(--success);">🟢 0 Achieved</span>
+                    <span style="color: var(--warning);">🟡 2 In Progress</span>
+                    <span style="color: var(--danger);">🔴 3 Far</span>
+                </div>
+            </div>
+            
+            <div class="goals-grid">
+
+                <div class="goal-card far">
+                    <div class="goal-header">
+                        <span class="goal-llm">Claude</span>
+                        <span class="goal-status far">Needs Work</span>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill far" style="width: 5.6%;"></div>
+                        </div>
+                    </div>
+                    <div class="goal-metrics">
+                        <span>Current: <span class="goal-current">1.4%</span></span>
+                        <span>Target: 25%</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                        📈 23.6% more to reach goal
+                    </div>
+                </div>
+
+                <div class="goal-card in_progress">
+                    <div class="goal-header">
+                        <span class="goal-llm">ChatGPT</span>
+                        <span class="goal-status in_progress">In Progress</span>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill in_progress" style="width: 52.5%;"></div>
+                        </div>
+                    </div>
+                    <div class="goal-metrics">
+                        <span>Current: <span class="goal-current">21.0%</span></span>
+                        <span>Target: 40%</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                        📈 19.0% more to reach goal
+                    </div>
+                </div>
+
+                <div class="goal-card far">
+                    <div class="goal-header">
+                        <span class="goal-llm">Gemini</span>
+                        <span class="goal-status far">Needs Work</span>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill far" style="width: 0.0%;"></div>
+                        </div>
+                    </div>
+                    <div class="goal-metrics">
+                        <span>Current: <span class="goal-current">0.0%</span></span>
+                        <span>Target: 40%</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                        📈 40.0% more to reach goal
+                    </div>
+                </div>
+
+                <div class="goal-card far">
+                    <div class="goal-header">
+                        <span class="goal-llm">Grok</span>
+                        <span class="goal-status far">Needs Work</span>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill far" style="width: 5.6%;"></div>
+                        </div>
+                    </div>
+                    <div class="goal-metrics">
+                        <span>Current: <span class="goal-current">1.4%</span></span>
+                        <span>Target: 25%</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                        📈 23.6% more to reach goal
+                    </div>
+                </div>
+
+                <div class="goal-card in_progress">
+                    <div class="goal-header">
+                        <span class="goal-llm">Perplexity</span>
+                        <span class="goal-status in_progress">In Progress</span>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill in_progress" style="width: 59.7%;"></div>
+                        </div>
+                    </div>
+                    <div class="goal-metrics">
+                        <span>Current: <span class="goal-current">23.9%</span></span>
+                        <span>Target: 40%</span>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                        📈 16.1% more to reach goal
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Monthly Comparison Section -->
+        <div class="section-header">
+            <h2>📅 Monthly Comparison</h2>
+            <div class="line"></div>
+        </div>
+        
+        <div class="goals-section">
+            <table class="monthly-table">
+                <thead>
+                    <tr>
+                        <th>LLM</th>
+                        <th>Dec 2025</th>
+                        <th>Jan 2026</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: 600;">ChatGPT</td>
+                        <td>21.0% <span style="color: var(--text-muted); font-size: 12px;">(87 mentions)</span></td>
+                        <td>18.8% <span style="color: var(--text-muted); font-size: 12px;">(26 mentions)</span></td>
+                        <td class="change-negative">↓ 2.1999999999999993% <span style="font-size: 12px;">(↓61 mentions)</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600;">Claude</td>
+                        <td>1.2% <span style="color: var(--text-muted); font-size: 12px;">(5 mentions)</span></td>
+                        <td>2.9% <span style="color: var(--text-muted); font-size: 12px;">(4 mentions)</span></td>
+                        <td class="change-positive">↑ 1.7% <span style="font-size: 12px;">(↓1 mentions)</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600;">Gemini</td>
+                        <td>0.0% <span style="color: var(--text-muted); font-size: 12px;">(0 mentions)</span></td>
+                        <td>0.0% <span style="color: var(--text-muted); font-size: 12px;">(0 mentions)</span></td>
+                        <td class="change-neutral">→ 0.0% <span style="font-size: 12px;">(→0 mentions)</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600;">Grok</td>
+                        <td>2.7% <span style="color: var(--text-muted); font-size: 12px;">(11 mentions)</span></td>
+                        <td>3.6% <span style="color: var(--text-muted); font-size: 12px;">(5 mentions)</span></td>
+                        <td class="change-positive">↑ 0.8999999999999999% <span style="font-size: 12px;">(↓6 mentions)</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600;">Perplexity</td>
+                        <td>15.7% <span style="color: var(--text-muted); font-size: 12px;">(65 mentions)</span></td>
+                        <td>21.0% <span style="color: var(--text-muted); font-size: 12px;">(29 mentions)</span></td>
+                        <td class="change-positive">↑ 5.300000000000001% <span style="font-size: 12px;">(↓36 mentions)</span></td>
+                    </tr>
+                    <tr style="background: var(--bg-primary); font-weight: 600;">
+                        <td>Overall</td>
+                        <td>8.1% <span style="color: var(--text-muted); font-size: 12px;">(Rank #12)</span></td>
+                        <td>9.3% <span style="color: var(--text-muted); font-size: 12px;">(Rank #15)</span></td>
+                        <td class="change-positive">↑ 1.200000000000001% <span style="font-size: 12px;">(Rank ↓3)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Historical Trend Chart -->
+        <div class="section-header">
+            <h2>Visibility Trend (Last 90 Days)</h2>
+            <div class="line"></div>
+        </div>
+        
+        <div class="chart-container" style="margin-bottom: 48px;">
+            <canvas id="trendChart" height="250"></canvas>
+        </div>
+        
+        <script>
+            // Trend Chart
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: ["2025-12-16", "2025-12-17", "2025-12-28", "2026-01-04"],
+                    datasets: [{
+                        label: 'Visibility Score (%)',
+                        data: [10.0, 10.6, 3.8, 9.3],
+                        borderColor: '#00ff88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        yAxisID: 'y'
+                    }, {
+                        label: 'Rank (lower is better)',
+                        data: [12, 10, 15, 15],
+                        borderColor: '#ffa502',
+                        backgroundColor: 'rgba(255, 165, 2, 0.1)',
+                        fill: false,
+                        tension: 0.3,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#8b8b9e', font: { family: "'Space Grotesk'" } }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1a1a24',
+                            titleColor: '#fff',
+                            bodyColor: '#8b8b9e',
+                            borderColor: '#2a2a3a',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: '#2a2a3a' },
+                            ticks: { color: '#8b8b9e' }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            min: 0,
+                            max: 100,
+                            grid: { color: '#2a2a3a' },
+                            ticks: { 
+                                color: '#00ff88',
+                                callback: function(value) { return value + '%'; }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Visibility Score',
+                                color: '#00ff88'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            reverse: true,
+                            min: 1,
+                            grid: { drawOnChartArea: false },
+                            ticks: { 
+                                color: '#ffa502',
+                                callback: function(value) { return '#' + value; }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Rank',
+                                color: '#ffa502'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+
         <!-- LLM Comparison -->
         <div class="section-header">
             <h2>Performance by LLM</h2>
@@ -444,6 +891,56 @@
         </div>
         
         <div class="llm-grid">
+
+            <div class="llm-card">
+                <div class="llm-name">
+                    <div class="llm-icon claude">C</div>
+                    Claude
+                </div>
+                <div class="llm-stats">
+                    <div class="llm-stat">
+                        <div class="stat-label">Visibility</div>
+                        <div class="stat-value" style="color: var(--accent)">1.4%</div>
+                    </div>
+                    <div class="llm-stat">
+                        <div class="stat-label">Rank</div>
+                        <div class="stat-value">#171</div>
+                    </div>
+                    <div class="llm-stat">
+                        <div class="stat-label">Mentions</div>
+                        <div class="stat-value">2</div>
+                    </div>
+                    <div class="llm-stat">
+                        <div class="stat-label">Queries</div>
+                        <div class="stat-value">138</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="llm-card">
+                <div class="llm-name">
+                    <div class="llm-icon chatgpt">C</div>
+                    ChatGPT
+                </div>
+                <div class="llm-stats">
+                    <div class="llm-stat">
+                        <div class="stat-label">Visibility</div>
+                        <div class="stat-value" style="color: var(--accent)">21.0%</div>
+                    </div>
+                    <div class="llm-stat">
+                        <div class="stat-label">Rank</div>
+                        <div class="stat-value">#7</div>
+                    </div>
+                    <div class="llm-stat">
+                        <div class="stat-label">Mentions</div>
+                        <div class="stat-value">29</div>
+                    </div>
+                    <div class="llm-stat">
+                        <div class="stat-label">Queries</div>
+                        <div class="stat-value">138</div>
+                    </div>
+                </div>
+            </div>
 
             <div class="llm-card">
                 <div class="llm-name">
@@ -472,21 +969,21 @@
 
             <div class="llm-card">
                 <div class="llm-name">
-                    <div class="llm-icon chatgpt">C</div>
-                    ChatGPT
+                    <div class="llm-icon grok">G</div>
+                    Grok
                 </div>
                 <div class="llm-stats">
                     <div class="llm-stat">
                         <div class="stat-label">Visibility</div>
-                        <div class="stat-value" style="color: var(--accent)">18.8%</div>
+                        <div class="stat-value" style="color: var(--accent)">1.4%</div>
                     </div>
                     <div class="llm-stat">
                         <div class="stat-label">Rank</div>
-                        <div class="stat-value">#9</div>
+                        <div class="stat-value">#171</div>
                     </div>
                     <div class="llm-stat">
                         <div class="stat-label">Mentions</div>
-                        <div class="stat-value">26</div>
+                        <div class="stat-value">2</div>
                     </div>
                     <div class="llm-stat">
                         <div class="stat-label">Queries</div>
@@ -503,65 +1000,15 @@
                 <div class="llm-stats">
                     <div class="llm-stat">
                         <div class="stat-label">Visibility</div>
-                        <div class="stat-value" style="color: var(--accent)">21.0%</div>
+                        <div class="stat-value" style="color: var(--accent)">23.9%</div>
                     </div>
                     <div class="llm-stat">
                         <div class="stat-label">Rank</div>
-                        <div class="stat-value">#5</div>
+                        <div class="stat-value">#4</div>
                     </div>
                     <div class="llm-stat">
                         <div class="stat-label">Mentions</div>
-                        <div class="stat-value">29</div>
-                    </div>
-                    <div class="llm-stat">
-                        <div class="stat-label">Queries</div>
-                        <div class="stat-value">138</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="llm-card">
-                <div class="llm-name">
-                    <div class="llm-icon grok">G</div>
-                    Grok
-                </div>
-                <div class="llm-stats">
-                    <div class="llm-stat">
-                        <div class="stat-label">Visibility</div>
-                        <div class="stat-value" style="color: var(--accent)">3.6%</div>
-                    </div>
-                    <div class="llm-stat">
-                        <div class="stat-label">Rank</div>
-                        <div class="stat-value">#24</div>
-                    </div>
-                    <div class="llm-stat">
-                        <div class="stat-label">Mentions</div>
-                        <div class="stat-value">5</div>
-                    </div>
-                    <div class="llm-stat">
-                        <div class="stat-label">Queries</div>
-                        <div class="stat-value">138</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="llm-card">
-                <div class="llm-name">
-                    <div class="llm-icon claude">C</div>
-                    Claude
-                </div>
-                <div class="llm-stats">
-                    <div class="llm-stat">
-                        <div class="stat-label">Visibility</div>
-                        <div class="stat-value" style="color: var(--accent)">2.9%</div>
-                    </div>
-                    <div class="llm-stat">
-                        <div class="stat-label">Rank</div>
-                        <div class="stat-value">#87</div>
-                    </div>
-                    <div class="llm-stat">
-                        <div class="stat-label">Mentions</div>
-                        <div class="stat-value">4</div>
+                        <div class="stat-value">33</div>
                     </div>
                     <div class="llm-stat">
                         <div class="stat-label">Queries</div>
@@ -589,13 +1036,103 @@
 
             <div class="weak-spot-item">
                 <div class="weak-spot-header">
+                    <span class="weak-spot-intent">Cost and Budget</span>
+                    <span class="weak-spot-score">1.7%</span>
+                </div>
+                <ul class="weak-spot-prompts">
+                    <li>Cost of hiring developers from India</li>
+                    <li>India salary guide for tech hiring</li>
+                    <li>Budget-friendly tech hiring</li>
+
+                </ul>
+            </div>
+
+            <div class="weak-spot-item">
+                <div class="weak-spot-header">
                     <span class="weak-spot-intent">AI-Driven Recruitment</span>
                     <span class="weak-spot-score">11.7%</span>
                 </div>
                 <ul class="weak-spot-prompts">
-                    <li>AI-driven recruitment platform to hire remote Engineers</li>
                     <li>AI-powered hiring platform</li>
-                    <li>AI-driven recruitment platform to hire Software Engineers</li>
+                    <li>AI Vetted Indian tech talent</li>
+                    <li>AI-driven recruitment platform to hire remote Engineers</li>
+
+                </ul>
+            </div>
+
+            <div class="weak-spot-item">
+                <div class="weak-spot-header">
+                    <span class="weak-spot-intent">How to Hire from India</span>
+                    <span class="weak-spot-score">10.0%</span>
+                </div>
+                <ul class="weak-spot-prompts">
+                    <li>How to hire remote developers quickly</li>
+                    <li>How to interview Indian developers</li>
+                    <li>How to find vetted developers India</li>
+
+                </ul>
+            </div>
+
+            <div class="weak-spot-item">
+                <div class="weak-spot-header">
+                    <span class="weak-spot-intent">Direct Hiring Queries</span>
+                    <span class="weak-spot-score">6.0%</span>
+                </div>
+                <ul class="weak-spot-prompts">
+                    <li>Hire QA engineers India</li>
+                    <li>Hire data scientists India</li>
+                    <li>Hire full stack developers India</li>
+
+                </ul>
+            </div>
+
+            <div class="weak-spot-item">
+                <div class="weak-spot-header">
+                    <span class="weak-spot-intent">Talent Platform for Tech Companies</span>
+                    <span class="weak-spot-score">2.2%</span>
+                </div>
+                <ul class="weak-spot-prompts">
+                    <li>Hire developers for SaaS companies</li>
+                    <li>Tech talent for startups</li>
+                    <li>Indian talent for global companies</li>
+
+                </ul>
+            </div>
+
+            <div class="weak-spot-item">
+                <div class="weak-spot-header">
+                    <span class="weak-spot-intent">Hiring Models</span>
+                    <span class="weak-spot-score">15.0%</span>
+                </div>
+                <ul class="weak-spot-prompts">
+                    <li>Full time hiring platforms</li>
+                    <li>Flexible hiring models India</li>
+                    <li>Staff augmentation services India</li>
+
+                </ul>
+            </div>
+
+            <div class="weak-spot-item">
+                <div class="weak-spot-header">
+                    <span class="weak-spot-intent">Top Platforms for Indian Developers</span>
+                    <span class="weak-spot-score">14.7%</span>
+                </div>
+                <ul class="weak-spot-prompts">
+                    <li>Where can I find vetted Indian software engineers</li>
+                    <li>Best platform to hire Indian developers</li>
+                    <li>Top talent platforms India comparison</li>
+
+                </ul>
+            </div>
+
+            <div class="weak-spot-item">
+                <div class="weak-spot-header">
+                    <span class="weak-spot-intent">Vetting Process</span>
+                    <span class="weak-spot-score">16.7%</span>
+                </div>
+                <ul class="weak-spot-prompts">
+                    <li>Where can I find vetted Indian software engineers</li>
+                    <li>Vetting process for Indian developers</li>
 
                 </ul>
             </div>
@@ -608,108 +1145,6 @@
                 <ul class="weak-spot-prompts">
                     <li>How to hire remote developers quickly</li>
                     <li>Fast hiring process for developers</li>
-
-                </ul>
-            </div>
-
-            <div class="weak-spot-item">
-                <div class="weak-spot-header">
-                    <span class="weak-spot-intent">Talent Platform for Tech Companies</span>
-                    <span class="weak-spot-score">4.4%</span>
-                </div>
-                <ul class="weak-spot-prompts">
-                    <li>Hire engineers for Startup companies</li>
-                    <li>Talent platform for tech companies</li>
-                    <li>Hire developers for SaaS companies</li>
-
-                </ul>
-            </div>
-
-            <div class="weak-spot-item">
-                <div class="weak-spot-header">
-                    <span class="weak-spot-intent">How to Hire from India</span>
-                    <span class="weak-spot-score">6.7%</span>
-                </div>
-                <ul class="weak-spot-prompts">
-                    <li>How to hire remote developers quickly</li>
-                    <li>Who can help me hire remote developers from India</li>
-                    <li>How to find vetted developers India</li>
-
-                </ul>
-            </div>
-
-            <div class="weak-spot-item">
-                <div class="weak-spot-header">
-                    <span class="weak-spot-intent">Cost and Budget</span>
-                    <span class="weak-spot-score">3.3%</span>
-                </div>
-                <ul class="weak-spot-prompts">
-                    <li>Cost of hiring developers from India</li>
-                    <li>India salary guide for tech hiring</li>
-                    <li>How much does it cost to hire a developer from India</li>
-
-                </ul>
-            </div>
-
-            <div class="weak-spot-item">
-                <div class="weak-spot-header">
-                    <span class="weak-spot-intent">Direct Hiring Queries</span>
-                    <span class="weak-spot-score">10.0%</span>
-                </div>
-                <ul class="weak-spot-prompts">
-                    <li>Vetted Indian developers</li>
-                    <li>Hire full stack developers India</li>
-                    <li>Hire DevOps engineers India</li>
-
-                </ul>
-            </div>
-
-            <div class="weak-spot-item">
-                <div class="weak-spot-header">
-                    <span class="weak-spot-intent">Hiring Models</span>
-                    <span class="weak-spot-score">18.3%</span>
-                </div>
-                <ul class="weak-spot-prompts">
-                    <li>Contract to hire developers India</li>
-                    <li>Full time hiring platforms</li>
-                    <li>Flexible hiring models India</li>
-
-                </ul>
-            </div>
-
-            <div class="weak-spot-item">
-                <div class="weak-spot-header">
-                    <span class="weak-spot-intent">Vetting Process</span>
-                    <span class="weak-spot-score">3.3%</span>
-                </div>
-                <ul class="weak-spot-prompts">
-                    <li>Where can I find vetted Indian software engineers</li>
-                    <li>Vetting process for Indian developers</li>
-
-                </ul>
-            </div>
-
-            <div class="weak-spot-item">
-                <div class="weak-spot-header">
-                    <span class="weak-spot-intent">Top Platforms for Indian Developers</span>
-                    <span class="weak-spot-score">16.0%</span>
-                </div>
-                <ul class="weak-spot-prompts">
-                    <li>What is the best platform to hire Indian developers</li>
-                    <li>Best platform to hire Indian developers</li>
-                    <li>What are the top platforms for tech companies to hire vetted Indian software engineers?</li>
-
-                </ul>
-            </div>
-
-            <div class="weak-spot-item">
-                <div class="weak-spot-header">
-                    <span class="weak-spot-intent">Competitors and Comparisons</span>
-                    <span class="weak-spot-score">6.7%</span>
-                </div>
-                <ul class="weak-spot-prompts">
-                    <li>Who are the top competitors in hiring vetted software engineers from India for tech companies?</li>
-                    <li>Who are the top competitors in AI-driven recruitment for tech companies hiring vetted software engineers and marketing talent from India?</li>
 
                 </ul>
             </div>
@@ -728,308 +1163,308 @@
                     <div class="ranking-item ">
                         <div class="rank-num">1</div>
                         <span class="company-name">Upwork</span>
-                        <span class="mention-count">1418 mentions</span>
+                        <span class="mention-count">1093 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">2</div>
                         <span class="company-name">Toptal</span>
-                        <span class="mention-count">1307 mentions</span>
+                        <span class="mention-count">1039 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">3</div>
                         <span class="company-name">LinkedIn</span>
-                        <span class="mention-count">982 mentions</span>
+                        <span class="mention-count">694 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">4</div>
                         <span class="company-name">Turing</span>
-                        <span class="mention-count">709 mentions</span>
+                        <span class="mention-count">671 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">5</div>
                         <span class="company-name">Naukri</span>
-                        <span class="mention-count">613 mentions</span>
+                        <span class="mention-count">545 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">6</div>
                         <span class="company-name">AngelList</span>
-                        <span class="mention-count">457 mentions</span>
+                        <span class="mention-count">362 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">7</div>
                         <span class="company-name">Andela</span>
-                        <span class="mention-count">413 mentions</span>
+                        <span class="mention-count">358 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">8</div>
                         <span class="company-name">HackerRank</span>
-                        <span class="mention-count">384 mentions</span>
+                        <span class="mention-count">328 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">9</div>
                         <span class="company-name">Indeed</span>
-                        <span class="mention-count">362 mentions</span>
+                        <span class="mention-count">259 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">10</div>
-                        <span class="company-name">Remote</span>
-                        <span class="mention-count">318 mentions</span>
+                        <span class="company-name">Freelancer</span>
+                        <span class="mention-count">258 mentions</span>
                     </div>
 
-                    <div class="ranking-item ">
+                    <div class="ranking-item target">
                         <div class="rank-num">11</div>
-                        <span class="company-name">Freelancer</span>
-                        <span class="mention-count">248 mentions</span>
+                        <span class="company-name">Uplers</span>
+                        <span class="mention-count">215 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">12</div>
-                        <span class="company-name">Deel</span>
-                        <span class="mention-count">220 mentions</span>
+                        <span class="company-name">Codementor</span>
+                        <span class="mention-count">208 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">13</div>
-                        <span class="company-name">Glassdoor</span>
-                        <span class="mention-count">210 mentions</span>
+                        <span class="company-name">Remote</span>
+                        <span class="mention-count">180 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">14</div>
-                        <span class="company-name">Codementor</span>
-                        <span class="mention-count">198 mentions</span>
+                        <span class="company-name">Deel</span>
+                        <span class="mention-count">133 mentions</span>
                     </div>
 
-                    <div class="ranking-item target">
+                    <div class="ranking-item ">
                         <div class="rank-num">15</div>
-                        <span class="company-name">Uplers</span>
-                        <span class="mention-count">188 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">16</div>
-                        <span class="company-name">Fiverr</span>
-                        <span class="mention-count">175 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">17</div>
                         <span class="company-name">Arc</span>
-                        <span class="mention-count">149 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">18</div>
-                        <span class="company-name">Stack Overflow Jobs</span>
-                        <span class="mention-count">121 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">19</div>
-                        <span class="company-name">Use</span>
                         <span class="mention-count">97 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
-                        <div class="rank-num">20</div>
+                        <div class="rank-num">16</div>
+                        <span class="company-name">Use</span>
+                        <span class="mention-count">93 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">17</div>
+                        <span class="company-name">Glassdoor</span>
+                        <span class="mention-count">93 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">18</div>
+                        <span class="company-name">Fiverr</span>
+                        <span class="mention-count">91 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">19</div>
                         <span class="company-name">We Work Remotely</span>
-                        <span class="mention-count">88 mentions</span>
+                        <span class="mention-count">91 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">20</div>
+                        <span class="company-name">Stack Overflow Jobs</span>
+                        <span class="mention-count">87 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">21</div>
-                        <span class="company-name">Consider</span>
-                        <span class="mention-count">79 mentions</span>
+                        <span class="company-name">RemoteOK</span>
+                        <span class="mention-count">84 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">22</div>
-                        <span class="company-name">Triplebyte</span>
-                        <span class="mention-count">79 mentions</span>
+                        <span class="company-name">Consider</span>
+                        <span class="mention-count">75 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">23</div>
+                        <span class="company-name">Triplebyte</span>
+                        <span class="mention-count">74 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">24</div>
                         <span class="company-name">Gun.io</span>
                         <span class="mention-count">73 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
-                        <div class="rank-num">24</div>
-                        <span class="company-name">RemoteOK</span>
-                        <span class="mention-count">71 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
                         <div class="rank-num">25</div>
-                        <span class="company-name">GitHub Jobs</span>
-                        <span class="mention-count">65 mentions</span>
+                        <span class="company-name">Talent500</span>
+                        <span class="mention-count">51 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">26</div>
-                        <span class="company-name">BairesDev</span>
-                        <span class="mention-count">61 mentions</span>
+                        <span class="company-name">GitHub Jobs</span>
+                        <span class="mention-count">50 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">27</div>
-                        <span class="company-name">Talent500</span>
-                        <span class="mention-count">58 mentions</span>
+                        <span class="company-name">Strong</span>
+                        <span class="mention-count">49 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">28</div>
-                        <span class="company-name">Supersourcing</span>
-                        <span class="mention-count">56 mentions</span>
+                        <span class="company-name">Focus</span>
+                        <span class="mention-count">49 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">29</div>
-                        <span class="company-name">Crossover</span>
-                        <span class="mention-count">56 mentions</span>
+                        <span class="company-name">Greenhouse</span>
+                        <span class="mention-count">43 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">30</div>
-                        <span class="company-name">X-Team</span>
-                        <span class="mention-count">52 mentions</span>
+                        <span class="company-name">Flexiple</span>
+                        <span class="mention-count">41 mentions</span>
                     </div>
 
                 </div>
             </div>
 
             <div class="rankings-card">
-                <div class="card-header">Gemini Rankings</div>
+                <div class="card-header">Claude Rankings</div>
                 <div class="rankings-list">
 
                     <div class="ranking-item ">
                         <div class="rank-num">1</div>
-                        <span class="company-name">Upwork</span>
-                        <span class="mention-count">283 mentions</span>
+                        <span class="company-name">Toptal</span>
+                        <span class="mention-count">147 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">2</div>
-                        <span class="company-name">LinkedIn</span>
-                        <span class="mention-count">276 mentions</span>
+                        <span class="company-name">AngelList</span>
+                        <span class="mention-count">143 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">3</div>
-                        <span class="company-name">Toptal</span>
-                        <span class="mention-count">239 mentions</span>
+                        <span class="company-name">Upwork</span>
+                        <span class="mention-count">128 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">4</div>
-                        <span class="company-name">Indeed</span>
-                        <span class="mention-count">146 mentions</span>
+                        <span class="company-name">Turing</span>
+                        <span class="mention-count">124 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">5</div>
-                        <span class="company-name">Naukri</span>
-                        <span class="mention-count">120 mentions</span>
+                        <span class="company-name">Codementor</span>
+                        <span class="mention-count">114 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">6</div>
-                        <span class="company-name">AngelList</span>
-                        <span class="mention-count">101 mentions</span>
+                        <span class="company-name">LinkedIn</span>
+                        <span class="mention-count">103 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">7</div>
-                        <span class="company-name">Glassdoor</span>
-                        <span class="mention-count">100 mentions</span>
+                        <span class="company-name">Naukri</span>
+                        <span class="mention-count">101 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">8</div>
-                        <span class="company-name">Andela</span>
-                        <span class="mention-count">87 mentions</span>
+                        <span class="company-name">Freelancer</span>
+                        <span class="mention-count">68 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">9</div>
-                        <span class="company-name">Remote</span>
-                        <span class="mention-count">76 mentions</span>
+                        <span class="company-name">Indeed</span>
+                        <span class="mention-count">56 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">10</div>
-                        <span class="company-name">Fiverr</span>
-                        <span class="mention-count">72 mentions</span>
+                        <span class="company-name">Remote</span>
+                        <span class="mention-count">41 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">11</div>
-                        <span class="company-name">Arc</span>
-                        <span class="mention-count">54 mentions</span>
+                        <span class="company-name">Consider</span>
+                        <span class="mention-count">39 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">12</div>
-                        <span class="company-name">HackerRank</span>
-                        <span class="mention-count">54 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">13</div>
-                        <span class="company-name">Deel</span>
-                        <span class="mention-count">52 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">14</div>
-                        <span class="company-name">Revelo</span>
-                        <span class="mention-count">49 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">15</div>
-                        <span class="company-name">Turing</span>
-                        <span class="mention-count">42 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">16</div>
-                        <span class="company-name">BairesDev</span>
+                        <span class="company-name">Use</span>
                         <span class="mention-count">37 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
-                        <div class="rank-num">17</div>
+                        <div class="rank-num">13</div>
+                        <span class="company-name">Strong</span>
+                        <span class="mention-count">36 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">14</div>
+                        <span class="company-name">HackerRank</span>
+                        <span class="mention-count">34 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">15</div>
                         <span class="company-name">Stack Overflow Jobs</span>
                         <span class="mention-count">31 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
+                        <div class="rank-num">16</div>
+                        <span class="company-name">AI-powered</span>
+                        <span class="mention-count">27 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">17</div>
+                        <span class="company-name">Gun.io</span>
+                        <span class="mention-count">22 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
                         <div class="rank-num">18</div>
-                        <span class="company-name">Codementor</span>
+                        <span class="company-name">GitHub Jobs</span>
                         <span class="mention-count">22 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">19</div>
-                        <span class="company-name">Triplebyte</span>
-                        <span class="mention-count">21 mentions</span>
+                        <span class="company-name">Focus</span>
+                        <span class="mention-count">22 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">20</div>
-                        <span class="company-name">GitHub Jobs</span>
-                        <span class="mention-count">21 mentions</span>
+                        <span class="company-name">Glassdoor</span>
+                        <span class="mention-count">22 mentions</span>
                     </div>
 
                 </div>
@@ -1042,248 +1477,164 @@
                     <div class="ranking-item ">
                         <div class="rank-num">1</div>
                         <span class="company-name">Toptal</span>
-                        <span class="mention-count">447 mentions</span>
+                        <span class="mention-count">443 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">2</div>
-                        <span class="company-name">Upwork</span>
-                        <span class="mention-count">404 mentions</span>
+                        <span class="company-name">Turing</span>
+                        <span class="mention-count">382 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">3</div>
-                        <span class="company-name">Turing</span>
-                        <span class="mention-count">372 mentions</span>
+                        <span class="company-name">Upwork</span>
+                        <span class="mention-count">381 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">4</div>
                         <span class="company-name">LinkedIn</span>
-                        <span class="mention-count">258 mentions</span>
+                        <span class="mention-count">264 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">5</div>
                         <span class="company-name">Naukri</span>
-                        <span class="mention-count">178 mentions</span>
+                        <span class="mention-count">206 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">6</div>
                         <span class="company-name">Andela</span>
-                        <span class="mention-count">157 mentions</span>
+                        <span class="mention-count">178 mentions</span>
                     </div>
 
-                    <div class="ranking-item ">
+                    <div class="ranking-item target">
                         <div class="rank-num">7</div>
-                        <span class="company-name">AngelList</span>
-                        <span class="mention-count">128 mentions</span>
+                        <span class="company-name">Uplers</span>
+                        <span class="mention-count">139 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">8</div>
                         <span class="company-name">HackerRank</span>
-                        <span class="mention-count">124 mentions</span>
+                        <span class="mention-count">131 mentions</span>
                     </div>
 
-                    <div class="ranking-item target">
+                    <div class="ranking-item ">
                         <div class="rank-num">9</div>
-                        <span class="company-name">Uplers</span>
-                        <span class="mention-count">104 mentions</span>
+                        <span class="company-name">AngelList</span>
+                        <span class="mention-count">126 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">10</div>
-                        <span class="company-name">Deel</span>
-                        <span class="mention-count">74 mentions</span>
+                        <span class="company-name">RemoteOK</span>
+                        <span class="mention-count">72 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">11</div>
-                        <span class="company-name">Remote</span>
-                        <span class="mention-count">67 mentions</span>
+                        <span class="company-name">Freelancer</span>
+                        <span class="mention-count">60 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">12</div>
-                        <span class="company-name">Supersourcing</span>
-                        <span class="mention-count">54 mentions</span>
+                        <span class="company-name">Deel</span>
+                        <span class="mention-count">57 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">13</div>
-                        <span class="company-name">RemoteOK</span>
-                        <span class="mention-count">54 mentions</span>
+                        <span class="company-name">Indeed</span>
+                        <span class="mention-count">51 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">14</div>
-                        <span class="company-name">Freelancer</span>
-                        <span class="mention-count">51 mentions</span>
+                        <span class="company-name">Remote</span>
+                        <span class="mention-count">48 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">15</div>
                         <span class="company-name">Talent500</span>
-                        <span class="mention-count">45 mentions</span>
+                        <span class="mention-count">47 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">16</div>
                         <span class="company-name">Gun.io</span>
-                        <span class="mention-count">45 mentions</span>
+                        <span class="mention-count">46 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">17</div>
-                        <span class="company-name">Indeed</span>
-                        <span class="mention-count">42 mentions</span>
+                        <span class="company-name">We Work Remotely</span>
+                        <span class="mention-count">44 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">18</div>
-                        <span class="company-name">Arc</span>
-                        <span class="mention-count">40 mentions</span>
+                        <span class="company-name">Triplebyte</span>
+                        <span class="mention-count">39 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">19</div>
-                        <span class="company-name">Flexiple</span>
+                        <span class="company-name">Stack Overflow Jobs</span>
                         <span class="mention-count">35 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">20</div>
-                        <span class="company-name">Stack Overflow Jobs</span>
-                        <span class="mention-count">34 mentions</span>
+                        <span class="company-name">Supersourcing</span>
+                        <span class="mention-count">35 mentions</span>
                     </div>
 
                 </div>
             </div>
 
             <div class="rankings-card">
-                <div class="card-header">Perplexity Rankings</div>
+                <div class="card-header">Gemini Rankings</div>
                 <div class="rankings-list">
 
                     <div class="ranking-item ">
                         <div class="rank-num">1</div>
-                        <span class="company-name">Upwork</span>
-                        <span class="mention-count">104 mentions</span>
+                        <span class="company-name">Turing</span>
+                        <span class="mention-count">3 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">2</div>
-                        <span class="company-name">Toptal</span>
-                        <span class="mention-count">99 mentions</span>
+                        <span class="company-name">Arc</span>
+                        <span class="mention-count">2 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">3</div>
-                        <span class="company-name">LinkedIn</span>
-                        <span class="mention-count">85 mentions</span>
+                        <span class="company-name">Supersourcing</span>
+                        <span class="mention-count">1 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">4</div>
-                        <span class="company-name">Turing</span>
-                        <span class="mention-count">75 mentions</span>
+                        <span class="company-name">Cutshort</span>
+                        <span class="mention-count">1 mentions</span>
                     </div>
 
-                    <div class="ranking-item target">
+                    <div class="ranking-item ">
                         <div class="rank-num">5</div>
-                        <span class="company-name">Uplers</span>
-                        <span class="mention-count">65 mentions</span>
+                        <span class="company-name">Toptal</span>
+                        <span class="mention-count">1 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">6</div>
-                        <span class="company-name">Indeed</span>
-                        <span class="mention-count">50 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">7</div>
-                        <span class="company-name">Naukri</span>
-                        <span class="mention-count">47 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">8</div>
-                        <span class="company-name">Arc</span>
-                        <span class="mention-count">46 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">9</div>
-                        <span class="company-name">HackerRank</span>
-                        <span class="mention-count">32 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">10</div>
-                        <span class="company-name">Deel</span>
-                        <span class="mention-count">21 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">11</div>
-                        <span class="company-name">AngelList</span>
-                        <span class="mention-count">15 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">12</div>
-                        <span class="company-name">Fiverr</span>
-                        <span class="mention-count">14 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">13</div>
-                        <span class="company-name">Remote</span>
-                        <span class="mention-count">14 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">14</div>
-                        <span class="company-name">Glassdoor</span>
-                        <span class="mention-count">13 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">15</div>
-                        <span class="company-name">RemoteOK</span>
-                        <span class="mention-count">11 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">16</div>
-                        <span class="company-name">ZipRecruiter</span>
-                        <span class="mention-count">10 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">17</div>
-                        <span class="company-name">Andela</span>
-                        <span class="mention-count">9 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">18</div>
-                        <span class="company-name">We Work Remotely</span>
-                        <span class="mention-count">9 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">19</div>
-                        <span class="company-name">Multiplier</span>
-                        <span class="mention-count">9 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">20</div>
-                        <span class="company-name">CodeSignal</span>
-                        <span class="mention-count">8 mentions</span>
+                        <span class="company-name">Talent500</span>
+                        <span class="mention-count">1 mentions</span>
                     </div>
 
                 </div>
@@ -1296,7 +1647,7 @@
                     <div class="ranking-item ">
                         <div class="rank-num">1</div>
                         <span class="company-name">Upwork</span>
-                        <span class="mention-count">490 mentions</span>
+                        <span class="mention-count">483 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
@@ -1308,7 +1659,7 @@
                     <div class="ranking-item ">
                         <div class="rank-num">3</div>
                         <span class="company-name">LinkedIn</span>
-                        <span class="mention-count">277 mentions</span>
+                        <span class="mention-count">244 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
@@ -1320,224 +1671,224 @@
                     <div class="ranking-item ">
                         <div class="rank-num">5</div>
                         <span class="company-name">Andela</span>
-                        <span class="mention-count">145 mentions</span>
+                        <span class="mention-count">155 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">6</div>
                         <span class="company-name">HackerRank</span>
-                        <span class="mention-count">138 mentions</span>
+                        <span class="mention-count">135 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">7</div>
                         <span class="company-name">Freelancer</span>
-                        <span class="mention-count">121 mentions</span>
+                        <span class="mention-count">128 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">8</div>
-                        <span class="company-name">Remote</span>
-                        <span class="mention-count">100 mentions</span>
+                        <span class="company-name">Turing</span>
+                        <span class="mention-count">113 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">9</div>
-                        <span class="company-name">Indeed</span>
+                        <span class="company-name">Codementor</span>
                         <span class="mention-count">87 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">10</div>
-                        <span class="company-name">Turing</span>
-                        <span class="mention-count">84 mentions</span>
+                        <span class="company-name">Indeed</span>
+                        <span class="mention-count">82 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">11</div>
-                        <span class="company-name">Codementor</span>
-                        <span class="mention-count">77 mentions</span>
+                        <span class="company-name">Remote</span>
+                        <span class="mention-count">80 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">12</div>
-                        <span class="company-name">Glassdoor</span>
-                        <span class="mention-count">58 mentions</span>
+                        <span class="company-name">AngelList</span>
+                        <span class="mention-count">61 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">13</div>
-                        <span class="company-name">AngelList</span>
-                        <span class="mention-count">56 mentions</span>
+                        <span class="company-name">Glassdoor</span>
+                        <span class="mention-count">46 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">14</div>
                         <span class="company-name">Fiverr</span>
-                        <span class="mention-count">54 mentions</span>
+                        <span class="mention-count">45 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">15</div>
                         <span class="company-name">Deel</span>
-                        <span class="mention-count">53 mentions</span>
+                        <span class="mention-count">44 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">16</div>
-                        <span class="company-name">Use</span>
-                        <span class="mention-count">30 mentions</span>
+                        <span class="company-name">We Work Remotely</span>
+                        <span class="mention-count">35 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">17</div>
-                        <span class="company-name">We Work Remotely</span>
-                        <span class="mention-count">28 mentions</span>
+                        <span class="company-name">Use</span>
+                        <span class="mention-count">29 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">18</div>
                         <span class="company-name">Triplebyte</span>
-                        <span class="mention-count">20 mentions</span>
+                        <span class="mention-count">26 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">19</div>
                         <span class="company-name">Stack Overflow Jobs</span>
-                        <span class="mention-count">19 mentions</span>
+                        <span class="mention-count">21 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">20</div>
-                        <span class="company-name">Greenhouse</span>
-                        <span class="mention-count">17 mentions</span>
+                        <span class="company-name">Focus</span>
+                        <span class="mention-count">18 mentions</span>
                     </div>
 
                 </div>
             </div>
 
             <div class="rankings-card">
-                <div class="card-header">Claude Rankings</div>
+                <div class="card-header">Perplexity Rankings</div>
                 <div class="rankings-list">
 
                     <div class="ranking-item ">
                         <div class="rank-num">1</div>
-                        <span class="company-name">AngelList</span>
-                        <span class="mention-count">157 mentions</span>
+                        <span class="company-name">Upwork</span>
+                        <span class="mention-count">101 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">2</div>
-                        <span class="company-name">Toptal</span>
-                        <span class="mention-count">153 mentions</span>
+                        <span class="company-name">LinkedIn</span>
+                        <span class="mention-count">83 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">3</div>
-                        <span class="company-name">Upwork</span>
-                        <span class="mention-count">137 mentions</span>
+                        <span class="company-name">Toptal</span>
+                        <span class="mention-count">79 mentions</span>
                     </div>
 
-                    <div class="ranking-item ">
+                    <div class="ranking-item target">
                         <div class="rank-num">4</div>
-                        <span class="company-name">Turing</span>
-                        <span class="mention-count">136 mentions</span>
+                        <span class="company-name">Uplers</span>
+                        <span class="mention-count">72 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">5</div>
-                        <span class="company-name">Naukri</span>
-                        <span class="mention-count">100 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">6</div>
-                        <span class="company-name">Codementor</span>
-                        <span class="mention-count">91 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">7</div>
-                        <span class="company-name">LinkedIn</span>
-                        <span class="mention-count">86 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">8</div>
-                        <span class="company-name">Freelancer</span>
+                        <span class="company-name">Indeed</span>
                         <span class="mention-count">70 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
+                        <div class="rank-num">6</div>
+                        <span class="company-name">Naukri</span>
+                        <span class="mention-count">70 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">7</div>
+                        <span class="company-name">Arc</span>
+                        <span class="mention-count">53 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">8</div>
+                        <span class="company-name">Turing</span>
+                        <span class="mention-count">49 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
                         <div class="rank-num">9</div>
-                        <span class="company-name">Remote</span>
-                        <span class="mention-count">61 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">10</div>
-                        <span class="company-name">Consider</span>
-                        <span class="mention-count">41 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">11</div>
-                        <span class="company-name">Use</span>
-                        <span class="mention-count">39 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">12</div>
-                        <span class="company-name">Stack Overflow Jobs</span>
-                        <span class="mention-count">37 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">13</div>
-                        <span class="company-name">Indeed</span>
-                        <span class="mention-count">37 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">14</div>
-                        <span class="company-name">HackerRank</span>
-                        <span class="mention-count">36 mentions</span>
-                    </div>
-
-                    <div class="ranking-item ">
-                        <div class="rank-num">15</div>
-                        <span class="company-name">Strong</span>
+                        <span class="company-name">AngelList</span>
                         <span class="mention-count">32 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
+                        <div class="rank-num">10</div>
+                        <span class="company-name">HackerRank</span>
+                        <span class="mention-count">28 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">11</div>
+                        <span class="company-name">Andela</span>
+                        <span class="mention-count">15 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">12</div>
+                        <span class="company-name">Fiverr</span>
+                        <span class="mention-count">14 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">13</div>
+                        <span class="company-name">Greenhouse</span>
+                        <span class="mention-count">14 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">14</div>
+                        <span class="company-name">Deel</span>
+                        <span class="mention-count">12 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
+                        <div class="rank-num">15</div>
+                        <span class="company-name">Zoho Recruit</span>
+                        <span class="mention-count">11 mentions</span>
+                    </div>
+
+                    <div class="ranking-item ">
                         <div class="rank-num">16</div>
-                        <span class="company-name">AI-powered</span>
-                        <span class="mention-count">25 mentions</span>
+                        <span class="company-name">Remote</span>
+                        <span class="mention-count">11 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">17</div>
-                        <span class="company-name">GitHub Jobs</span>
-                        <span class="mention-count">25 mentions</span>
+                        <span class="company-name">Lemon.io</span>
+                        <span class="mention-count">10 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">18</div>
-                        <span class="company-name">Glassdoor</span>
-                        <span class="mention-count">22 mentions</span>
+                        <span class="company-name">Multiplier</span>
+                        <span class="mention-count">9 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">19</div>
-                        <span class="company-name">Fiverr</span>
-                        <span class="mention-count">20 mentions</span>
+                        <span class="company-name">ZipRecruiter</span>
+                        <span class="mention-count">8 mentions</span>
                     </div>
 
                     <div class="ranking-item ">
                         <div class="rank-num">20</div>
-                        <span class="company-name">Deel</span>
-                        <span class="mention-count">20 mentions</span>
+                        <span class="company-name">Workable</span>
+                        <span class="mention-count">8 mentions</span>
                     </div>
 
                 </div>
@@ -1556,10 +1907,10 @@
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ["Hiring Managers Multi-Role", "Hiring Models", "Top Platforms for Indian Developers", "AI-Driven Recruitment", "Direct Hiring Queries", "How to Hire from India", "Competitors and Comparisons", "Talent Platform for Tech Companies", "Cost and Budget", "Vetting Process", "Fast Hiring Process"],
+                labels: ["Hiring Managers Multi-Role", "Competitors and Comparisons", "Vetting Process", "Hiring Models", "Top Platforms for Indian Developers", "AI-Driven Recruitment", "How to Hire from India", "Direct Hiring Queries", "Talent Platform for Tech Companies", "Cost and Budget", "Fast Hiring Process"],
                 datasets: [{
                     label: 'Visibility Score (%)',
-                    data: [26.7, 18.3, 16.0, 11.7, 10.0, 6.7, 6.7, 4.4, 3.3, 3.3, 0.0],
+                    data: [33.3, 26.7, 16.7, 15.0, 14.7, 11.7, 10.0, 6.0, 2.2, 1.7, 0.0],
                     backgroundColor: function(context) {
                         const value = context.raw;
                         if (value >= 50) return '#00ff88';
