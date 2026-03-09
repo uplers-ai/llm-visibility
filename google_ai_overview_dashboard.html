@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google AI Overview Test Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --text-primary: #ffffff;
+            --text-secondary: #8b8b9e;
+            --text-muted: #5a5a6e;
+            --border: #2a2a3a;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --success: #00ff88;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .logo {
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+        
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .meta-item span {
+            color: var(--accent);
+        }
+        
+        /* Score Cards */
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        
+        .score-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .score-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+        
+        .score-card.primary {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, var(--bg-card) 100%);
+        }
+        
+        .score-card .label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        
+        .score-card .value {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .score-card .value.accent { color: var(--accent); }
+        .score-card .value.warning { color: var(--warning); }
+        .score-card .value.danger { color: var(--danger); }
+        
+        .score-card .detail {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        /* Query Results */
+        .query-section {
+            margin-bottom: 48px;
+        }
+        
+        .query-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        
+        .query-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .query-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+        }
+        
+        .ai-overview-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .ai-overview-badge.success {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .ai-overview-badge.danger {
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+        }
+        
+        .ai-overview-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .ai-overview-content h3 {
+            font-size: 16px;
+            color: var(--accent);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .ai-overview-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .ai-overview-links {
+            margin-top: 20px;
+        }
+        
+        .ai-overview-links h4 {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .link-list {
+            list-style: none;
+        }
+        
+        .link-item {
+            margin-bottom: 12px;
+        }
+        
+        .link-item a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        
+        .link-item a:hover {
+            color: var(--accent-dim);
+            text-decoration: underline;
+        }
+        
+        .organic-results {
+            margin-top: 24px;
+        }
+        
+        .organic-results h3 {
+            font-size: 16px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .result-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: border-color 0.2s;
+        }
+        
+        .result-item:hover {
+            border-color: var(--accent);
+        }
+        
+        .result-position {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
+            line-height: 28px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-right: 12px;
+            vertical-align: top;
+        }
+        
+        .result-content {
+            display: inline-block;
+            width: calc(100% - 45px);
+            vertical-align: top;
+        }
+        
+        .result-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        
+        .result-title a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .result-link {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+        
+        .result-snippet {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .no-content {
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 24px 16px; }
+            h1 { font-size: 36px; }
+            .query-header { flex-direction: column; align-items: flex-start; }
+            .result-content { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Google AI Overview Test</div>
+            <h1>Test Dashboard</h1>
+            <p class="subtitle">AI Overview visibility analysis</p>
+            <div class="meta-info">
+                <div class="meta-item">Generated: <span>January 22, 2026 at 01:40 PM</span></div>
+                <div class="meta-item">Total Queries: <span>3</span></div>
+                <div class="meta-item">AI Overview Found: <span>3</span></div>
+            </div>
+        </header>
+        
+        <!-- Summary Cards -->
+        <div class="score-grid">
+            <div class="score-card primary">
+                <div class="label">AI Overview Coverage</div>
+                <div class="value accent">3/3</div>
+                <div class="detail">100.0% of queries show AI Overview</div>
+            </div>
+            <div class="score-card">
+                <div class="label">Total Queries Tested</div>
+                <div class="value">3</div>
+                <div class="detail">Queries analyzed</div>
+            </div>
+            <div class="score-card">
+                <div class="label">Success Rate</div>
+                <div class="value accent">100%</div>
+                <div class="detail">Queries with AI Overview</div>
+            </div>
+        </div>
+        
+        <!-- Query Results -->
+        <div class="query-section">
+            <h2 style="font-size: 24px; margin-bottom: 24px; color: var(--text-primary);">Query Results</h2>
+
+            <div class="query-card">
+                <div class="query-header">
+                    <div class="query-text">Query 1: How to hire developers from India</div>
+                    <span class="ai-overview-badge success">✓ AI Overview Found</span>
+                </div>
+
+                <div class="ai-overview-content">
+                    <h3>AI Overview</h3>
+<div class="no-content">AI Overview detected but no text content available</div></div>
+                <div class="organic-results">
+                    <h3>Top Organic Results (8 shown)</h3>
+
+                    <div class="result-item">
+                        <span class="result-position">1</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.reddit.com/r/developersIndia/comments/1i3ulyh/as_an_american_how_would_i_recruit_indian/" target="_blank">As An American, How Would I Recruit Indian Programmers ...</a></div>
+                            <div class="result-link">https://www.reddit.com/r/developersIndia/comments/1i3ulyh/as_an_american_how_would_i_recruit_indian/</div>
+                            <div class="result-snippet">What you need to do is get in contact with their colleges. Indian devs need to do their internship to get their degree. If you hire through ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">2</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.valuecoders.com/hire-developers" target="_blank">Hire Dedicated Software Developers | Programmers in India</a></div>
+                            <div class="result-link">https://www.valuecoders.com/hire-developers</div>
+                            <div class="result-snippet">There are multiple ways to hire remote developers for building software solutions. You can hire freelancers, hire in-house developers, or you can hire a ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">3</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.upwork.com/hire/indian-programmers/" target="_blank">Best Freelance Indian Programmers for Hire (Jan 2026)</a></div>
+                            <div class="result-link">https://www.upwork.com/hire/indian-programmers/</div>
+                            <div class="result-snippet">Hire top-rated freelance Indian Programmers on Upwork. Post your job and get personalized bids, or browse for talent ready to work on your indonesian ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">4</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.rippling.com/blog/hire-software-developer-in-india" target="_blank">How to Hire a Software Developer in India</a></div>
+                            <div class="result-link">https://www.rippling.com/blog/hire-software-developer-in-india</div>
+                            <div class="result-snippet">How to hire software developers in India · Step 1: Choose a hiring model · Step 2: Source potential candidates · Step 3: Review and vet your ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">5</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.virtualemployee.com/services/hire-developers" target="_blank">Hire Dedicated Developers in India - From $9/Hour, Save ...</a></div>
+                            <div class="result-link">https://www.virtualemployee.com/services/hire-developers</div>
+                            <div class="result-snippet">Hire dedicated developers for web and application projects on flexible plans. ISO-certified, NDA-protected, and trusted by 4500+ global clients.</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">6</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://medium.com/@webelightsolutions/hire-a-developer-from-india-how-u-s-startups-save-30-on-costs-without-losing-quality-e1a2c324ef31" target="_blank">Hire a Developer from India: How U.S. Startups Save 30%+ ...</a></div>
+                            <div class="result-link">https://medium.com/@webelightsolutions/hire-a-developer-from-india-how-u-s-startups-save-30-on-costs-without-losing-quality-e1a2c324ef31</div>
+                            <div class="result-snippet">Hiring a developer in the U.S. can involve headhunting fees, recruiters, and long hiring cycles. By working with Indian agencies like Webelight, ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">7</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://news.ycombinator.com/item?id=7134875" target="_blank">Is setting up a remote team of developers in India worth it?</a></div>
+                            <div class="result-link">https://news.ycombinator.com/item?id=7134875</div>
+                            <div class="result-snippet">The developers you can hire in India for $1,000 to $2,000 are competent and comparable with $120k to $150k US developers. These developers work ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">8</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.vrinsofts.com/how-much-does-it-cost-to-hire-a-dedicated-developer-in-india/" target="_blank">How Much Does It Cost to Hire a Dedicated Developer ...</a></div>
+                            <div class="result-link">https://www.vrinsofts.com/how-much-does-it-cost-to-hire-a-dedicated-developer-in-india/</div>
+                            <div class="result-snippet">Ans: The cost of hiring developers in India varies based on experience, skills, and project requirements. On average, junior developers charge $20–$35/hour, mid ...</div>
+                        </div>
+                    </div>
+</div><div style="margin-top: 16px; color: var(--text-muted); font-size: 13px;">Total search results: 36,400,000</div></div>
+            <div class="query-card">
+                <div class="query-header">
+                    <div class="query-text">Query 2: Best platforms for hiring remote software engineers</div>
+                    <span class="ai-overview-badge success">✓ AI Overview Found</span>
+                </div>
+
+                <div class="ai-overview-content">
+                    <h3>AI Overview</h3>
+<div class="no-content">AI Overview detected but no text content available</div></div>
+                <div class="organic-results">
+                    <h3>Top Organic Results (8 shown)</h3>
+
+                    <div class="result-item">
+                        <span class="result-position">1</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.reddit.com/r/RemoteJobs/comments/1lzi6fs/i_spent_months_researching_remote_job_sites_here/" target="_blank">I spent months researching remote job sites. Here are the ...</a></div>
+                            <div class="result-link">https://www.reddit.com/r/RemoteJobs/comments/1lzi6fs/i_spent_months_researching_remote_job_sites_here/</div>
+                            <div class="result-snippet">If you want freelance gigs, Upwork and Fiverr are reliable, and for tech-specific roles, sites like GitHub Jobs or Stack Overflow Jobs can be ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">2</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.remoteweek.io/blog/remote-software-developer-jobs" target="_blank">12 Best Platforms for Remote Software Developer Jobs ...</a></div>
+                            <div class="result-link">https://www.remoteweek.io/blog/remote-software-developer-jobs</div>
+                            <div class="result-snippet">12 Best Platforms for Remote Software Developer Jobs in 2025 · 1. RemoteWeek · 2. Lemon.io · 3. Indeed · 4. ZipRecruiter · 5. Glassdoor · 6.</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">3</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://arc.dev/talent-blog/software-developer-job-boards/" target="_blank">Developer Job Boards: 15+ Best Job Sites for Software ...</a></div>
+                            <div class="result-link">https://arc.dev/talent-blog/software-developer-job-boards/</div>
+                            <div class="result-snippet">Looking to get hired as a remote software developer or engineer? Here are the best software engineer job boards and hiring websites to know!</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">4</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.toptal.com/developers/remote" target="_blank">11 Best Remote Developers for Hire in January 2026</a></div>
+                            <div class="result-link">https://www.toptal.com/developers/remote</div>
+                            <div class="result-snippet">Toptal offers top remote developers on an hourly, part-time, or full-time contract basis. Clients include Thumbtack, Bridgestone, and Motorola.</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">5</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.hackreactor.com/resources/top-9-companies-that-are-hiring-software-engineers-to-work-remotely/" target="_blank">Top 9 companies that are hiring software engineers to work ...</a></div>
+                            <div class="result-link">https://www.hackreactor.com/resources/top-9-companies-that-are-hiring-software-engineers-to-work-remotely/</div>
+                            <div class="result-snippet">Top 9 companies that are hiring software engineers to work remotely · 1. GitHub · 2. MailerLite · 3. Mozilla · 4. Toggl · 5. Trello · 6. Toptal · 7.</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">6</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.quora.com/What-are-some-of-the-best-places-to-hire-remote-software-developers" target="_blank">What are some of the best places to hire remote software ...</a></div>
+                            <div class="result-link">https://www.quora.com/What-are-some-of-the-best-places-to-hire-remote-software-developers</div>
+                            <div class="result-snippet">The best way to hire remote developers for a startup is to use trusted platforms like Kennflik, Toptal, Upwork, or GitHub to find vetted talent, clearly define ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">7</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.techelevator.com/remote-job-boards-junior-software-developer/" target="_blank">6 Remote Job Boards Every Junior Software Developer ...</a></div>
+                            <div class="result-link">https://www.techelevator.com/remote-job-boards-junior-software-developer/</div>
+                            <div class="result-snippet">Underdog.io is a job board that features remote jobs from startups. The platform has an easy-to-use interface, and the application process is straightforward.</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">8</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://pixenate.com/t/where-to-find-remote-software-engineer-jobs/1782" target="_blank">Where to find remote software engineer jobs? - Pixenate Forum</a></div>
+                            <div class="result-link">https://pixenate.com/t/where-to-find-remote-software-engineer-jobs/1782</div>
+                            <div class="result-snippet">Toptal, Upwork, Fiverr – If going freelance doesn't make you break into hives, toss your resume into these and start bidding on projects. Expect ...</div>
+                        </div>
+                    </div>
+</div><div style="margin-top: 16px; color: var(--text-muted); font-size: 13px;">Total search results: 156,000,000</div></div>
+            <div class="query-card">
+                <div class="query-header">
+                    <div class="query-text">Query 3: AI-powered talent platforms connecting companies with developers</div>
+                    <span class="ai-overview-badge success">✓ AI Overview Found</span>
+                </div>
+
+                <div class="ai-overview-content">
+                    <h3>AI Overview</h3>
+<div class="no-content">AI Overview detected but no text content available</div></div>
+                <div class="organic-results">
+                    <h3>Top Organic Results (10 shown)</h3>
+
+                    <div class="result-item">
+                        <span class="result-position">1</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://eightfold.ai/" target="_blank">Eightfold AI: AI Recruiting Software - Artificial Intelligence ...</a></div>
+                            <div class="result-link">https://eightfold.ai/</div>
+                            <div class="result-snippet">Eightfold brings together AI recruiting, talent intelligence, and workforce transformation, built to help you hire, retain, and grow smarter.</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">2</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://recruiter.daily.dev/resources/developer-hiring-platforms-recruiters-use/" target="_blank">Top developer hiring platforms recruiters use</a></div>
+                            <div class="result-link">https://recruiter.daily.dev/resources/developer-hiring-platforms-recruiters-use/</div>
+                            <div class="result-snippet">LinkedIn Talent Solutions: Offers access to 1 billion professionals with advanced filtering and AI tools. Greenhouse: Structured hiring with ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">3</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.phenom.com/blog/examples-companies-using-ai-recruiting-platform" target="_blank">7 Companies Successfully Using AI in Their Recruiting ...</a></div>
+                            <div class="result-link">https://www.phenom.com/blog/examples-companies-using-ai-recruiting-platform</div>
+                            <div class="result-snippet">AI can help recruit top talent, streamline and personalize the application process for candidates, enhance the employee experience through skills matching and ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">4</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.gem.com/" target="_blank">Gem: The only AI-first all-in-one recruiting platform</a></div>
+                            <div class="result-link">https://www.gem.com/</div>
+                            <div class="result-snippet">Gem brings together your ATS, CRM, sourcing, scheduling, and analytics — plus 800+ million profiles to source from — with AI built into every workflow.</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">5</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.talentguard.com/blog/best-talent-marketplace-platforms" target="_blank">10 Best Internal Talent Marketplace Platforms in 2026</a></div>
+                            <div class="result-link">https://www.talentguard.com/blog/best-talent-marketplace-platforms</div>
+                            <div class="result-snippet">Eightfold is an AI-powered internal talent marketplace that hires and manages your workforce. Using advanced algorithms and global data, it helps businesses ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">6</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.radancy.com/en/platform-overview/" target="_blank">AI-Powered Talent Acquisition Platform</a></div>
+                            <div class="result-link">https://www.radancy.com/en/platform-overview/</div>
+                            <div class="result-snippet">Discover Radancy's AI-powered Talent Acquisition Cloud — an all‑in‑one platform that streamlines recruiting, cuts hiring costs, and accelerates time-to-hire ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">7</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.futurefit.ai/" target="_blank">FutureFit AI: AI-Powered Workforce Solutions</a></div>
+                            <div class="result-link">https://www.futurefit.ai/</div>
+                            <div class="result-snippet">Our platform creates win-win scenarios by connecting local talent to in-demand jobs, driving upskilling initiatives, and providing personalized career guidance.</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">8</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.ringover.com/blog/ai-recruitment-platform" target="_blank">16 Best AI Recruiting Platforms and Software of 2025 - Ringover</a></div>
+                            <div class="result-link">https://www.ringover.com/blog/ai-recruitment-platform</div>
+                            <div class="result-snippet">Turing is an advanced AI-driven platform that connects businesses with premier remote developers worldwide through a meticulous vetting process ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">9</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.findem.ai/knowledge-center/ai-recruitment-tools" target="_blank">Top 10 AI Recruitment Tools to Streamline Hiring</a></div>
+                            <div class="result-link">https://www.findem.ai/knowledge-center/ai-recruitment-tools</div>
+                            <div class="result-snippet">1. Findem. Findem is an AI-powered talent data platform with advanced features that automates and consolidates top of funnel activities across the entire talent ...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <span class="result-position">10</span>
+                        <div class="result-content">
+                            <div class="result-title"><a href="https://www.andela.com/" target="_blank">Andela: Hire Software Engineers | On-Demand Talent</a></div>
+                            <div class="result-link">https://www.andela.com/</div>
+                            <div class="result-snippet">Andela talent is rigorously qualified and certified, assessed by fully transparent code tests, and identified by our proprietary AI-powered Talent Decision ...</div>
+                        </div>
+                    </div>
+</div><div style="margin-top: 16px; color: var(--text-muted); font-size: 13px;">Total search results: 57,300,000</div></div>
+        </div>
+    </div>
+</body>
+</html>

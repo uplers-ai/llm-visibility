@@ -1,0 +1,30 @@
+2026-01-22 13:40:53,431 - INFO - ============================================================
+2026-01-22 13:40:53,432 - INFO - Google AI Overview Test Script
+2026-01-22 13:40:53,432 - INFO - ============================================================
+2026-01-22 13:40:53,432 - INFO - ✅ Starting tests with 3 queries
+2026-01-22 13:40:53,432 - INFO - 
+2026-01-22 13:40:53,432 - INFO - 📝 Query 1/3: How to hire developers from India
+2026-01-22 13:40:53,432 - INFO - ------------------------------------------------------------
+2026-01-22 13:40:54,414 - INFO - ✅ AI Overview found!
+2026-01-22 13:40:54,414 - INFO -    Organic results: 8
+2026-01-22 13:40:54,414 - INFO - 
+2026-01-22 13:40:56,415 - INFO - 📝 Query 2/3: Best platforms for hiring remote software engineers
+2026-01-22 13:40:56,416 - INFO - ------------------------------------------------------------
+2026-01-22 13:40:56,968 - INFO - ✅ AI Overview found!
+2026-01-22 13:40:56,968 - INFO -    Organic results: 8
+2026-01-22 13:40:56,968 - INFO - 
+2026-01-22 13:40:58,973 - INFO - 📝 Query 3/3: AI-powered talent platforms connecting companies with developers
+2026-01-22 13:40:58,973 - INFO - ------------------------------------------------------------
+2026-01-22 13:40:59,474 - INFO - ✅ AI Overview found!
+2026-01-22 13:40:59,474 - INFO -    Organic results: 10
+2026-01-22 13:40:59,475 - INFO - 
+2026-01-22 13:40:59,476 - INFO - 🎨 Generating HTML dashboard...
+2026-01-22 13:40:59,477 - INFO - ✅ Dashboard saved to google_ai_overview_dashboard.html
+2026-01-22 13:40:59,477 - INFO - ============================================================
+2026-01-22 13:40:59,478 - INFO - Test Summary
+2026-01-22 13:40:59,478 - INFO - ============================================================
+2026-01-22 13:40:59,478 - INFO - Total queries tested: 3
+2026-01-22 13:40:59,478 - INFO - Queries with AI Overview: 3
+2026-01-22 13:40:59,478 - INFO - Results saved to: google_ai_overview_results_2026-01-22_13-40-59.json
+2026-01-22 13:40:59,478 - INFO - Dashboard saved to: google_ai_overview_dashboard.html
+2026-01-22 13:40:59,478 - INFO - ============================================================
