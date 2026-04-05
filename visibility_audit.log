@@ -2969,3 +2969,306 @@
 2026-03-29 08:50:42,639 - INFO -    Raw data: audit_results.json
 2026-03-29 08:50:42,639 - INFO -    Screenshot: visibility_dashboard_2026-03-29.png
 2026-03-29 08:50:42,639 - INFO -    Archives: archives/
+2026-04-05 06:54:58,674 - INFO - 
+============================================================
+2026-04-05 06:54:58,674 - INFO - 🚀 STARTING LLM VISIBILITY AUDIT
+2026-04-05 06:54:58,674 - INFO - ============================================================
+2026-04-05 06:54:58,674 - INFO - Target Company: Uplers
+2026-04-05 06:54:58,674 - INFO - Target Region: USA
+2026-04-05 06:54:58,674 - INFO - Prompt Categories: 13
+2026-04-05 06:54:58,674 - INFO - Total Prompts: 48
+2026-04-05 06:54:58,674 - INFO - Runs per Prompt: 3
+2026-04-05 06:54:58,674 - INFO - Archive Retention: 12 weeks
+2026-04-05 06:54:58,674 - INFO - Email Notifications: Enabled
+2026-04-05 06:54:58,685 - INFO - 📊 Found previous audit from 2026-03-29
+2026-04-05 06:54:58,708 - INFO - 📅 Found monthly comparison data from 2026-03-08
+2026-04-05 06:54:58,708 - INFO - 📅 Found monthly comparison data from 2026-03-08
+2026-04-05 06:54:58,771 - INFO - 📈 Found 7 historical data points for trend analysis
+2026-04-05 06:54:59,292 - INFO - ✅ OpenAI client initialized
+2026-04-05 06:54:59,591 - INFO - ✅ Anthropic client initialized
+2026-04-05 06:54:59,951 - INFO - ✅ Google Gemini client initialized with 2026 model (gemini-2.5-flash)
+2026-04-05 06:54:59,951 - INFO - ✅ xAI Grok client initialized
+2026-04-05 06:54:59,951 - INFO - ✅ Perplexity client initialized
+2026-04-05 06:55:05,539 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 06:55:11,225 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 06:55:17,430 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 06:55:18,591 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:55:18,592 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBm4wjovNVjeEUNnoD5'}. Retrying in 5s...
+2026-04-05 06:55:23,678 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:55:23,679 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBmSw4vxP9itxiWQVaY'}. Retrying in 10s...
+2026-04-05 06:55:33,780 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:55:33,780 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBnC6P4rxSjzZcbndPR'}. Retrying in 20s...
+2026-04-05 06:55:53,781 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBnC6P4rxSjzZcbndPR'}
+2026-04-05 06:55:54,912 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:55:54,913 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBokKPmeMJZG5JZPF8d'}. Retrying in 5s...
+2026-04-05 06:56:00,039 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:56:00,039 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBp8HEoBBijqteDh8yp'}. Retrying in 10s...
+2026-04-05 06:56:10,132 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:56:10,132 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBpsXkTf2NuguJtnoq6'}. Retrying in 20s...
+2026-04-05 06:56:30,132 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBpsXkTf2NuguJtnoq6'}
+2026-04-05 06:56:31,222 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:56:31,222 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBrRiHmSFccjAj2eEZC'}. Retrying in 5s...
+2026-04-05 06:56:36,327 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:56:36,328 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBroTF9HCNbEJygsD2N'}. Retrying in 10s...
+2026-04-05 06:56:46,432 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-04-05 06:56:46,433 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBsYkEhwxaNHA5zFhvB'}. Retrying in 20s...
+2026-04-05 06:57:06,433 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZkBsYkEhwxaNHA5zFhvB'}
+2026-04-05 06:57:06,433 - WARNING - ⏭️  Skipping Claude for remaining queries (3 consecutive failures)
+2026-04-05 06:58:38,796 - WARNING - Attempt 1/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 5s...
+2026-04-05 06:58:43,914 - WARNING - Attempt 2/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 10s...
+2026-04-05 06:58:54,040 - WARNING - Attempt 3/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 20s...
+2026-04-05 06:59:14,040 - ERROR - All 3 attempts failed for _query: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions
+2026-04-05 06:59:15,171 - WARNING - Attempt 1/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 5s...
+2026-04-05 06:59:20,286 - WARNING - Attempt 2/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 10s...
+2026-04-05 06:59:30,402 - WARNING - Attempt 3/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 20s...
+2026-04-05 06:59:50,402 - ERROR - All 3 attempts failed for _query: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions
+2026-04-05 06:59:51,514 - WARNING - Attempt 1/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 5s...
+2026-04-05 06:59:56,644 - WARNING - Attempt 2/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 10s...
+2026-04-05 07:00:06,761 - WARNING - Attempt 3/3 failed: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions. Retrying in 20s...
+2026-04-05 07:00:26,761 - ERROR - All 3 attempts failed for _query: 401 Client Error: Unauthorized for url: https://api.perplexity.ai/chat/completions
+2026-04-05 07:00:26,761 - WARNING - ⏭️  Skipping Perplexity for remaining queries (3 consecutive failures)
+2026-04-05 07:00:33,363 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:00:39,943 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:00:46,939 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:02:41,978 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:02:47,766 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:02:53,908 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:04:36,039 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:04:48,205 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:04:59,345 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:05:07,004 - WARNING - ⏭️  Skipping Gemini for remaining queries (3 consecutive failures)
+2026-04-05 07:06:43,930 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:06:48,254 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:06:53,216 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:08:21,027 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:08:28,284 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:08:33,358 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:09:56,623 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:10:02,341 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:10:08,890 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:11:26,883 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:11:34,121 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:11:40,640 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:13:25,091 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:13:31,488 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:13:37,850 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:15:18,220 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:15:24,357 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:15:30,830 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:17:30,576 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:17:40,611 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:17:46,223 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:19:39,520 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:19:44,553 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:19:51,107 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:21:26,936 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:21:31,676 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:21:37,355 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:21:51,397 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:22:56,178 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:23:08,029 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 07:23:24,864 - WARNING - Attempt 3/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 20s...
+2026-04-05 07:23:44,864 - ERROR - All 3 attempts failed for _query: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions
+2026-04-05 07:23:51,782 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:23:55,119 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:23:58,977 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:25:05,642 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:25:10,795 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:25:15,468 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:26:44,857 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:26:51,611 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:26:58,013 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:27:53,469 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:28:06,839 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 07:28:25,286 - WARNING - Attempt 3/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 20s...
+2026-04-05 07:28:45,287 - ERROR - All 3 attempts failed for _query: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions
+2026-04-05 07:28:53,311 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:29:06,879 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 07:29:24,407 - WARNING - Attempt 3/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 20s...
+2026-04-05 07:29:44,408 - ERROR - All 3 attempts failed for _query: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions
+2026-04-05 07:29:54,234 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:30:00,776 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:30:10,121 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:31:39,177 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:31:47,147 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:31:53,904 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:33:40,829 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:33:45,687 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:33:52,090 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:35:25,919 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:35:32,802 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:35:38,296 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:37:18,518 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:37:24,755 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:37:29,959 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:39:15,731 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:39:21,510 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:39:25,993 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:39:40,712 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:39:52,575 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 07:40:11,245 - WARNING - Attempt 3/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 20s...
+2026-04-05 07:40:31,246 - ERROR - All 3 attempts failed for _query: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions
+2026-04-05 07:40:38,800 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:40:51,732 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 07:42:00,785 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:42:05,846 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:42:12,284 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:43:45,040 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:43:49,926 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:43:54,902 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:45:10,990 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:45:15,957 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:45:20,454 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:47:07,527 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:47:11,388 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:47:16,256 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:48:37,976 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:48:42,626 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:48:48,765 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:50:23,368 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:50:28,215 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:50:33,723 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:51:42,332 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:51:47,558 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:51:52,061 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:52:06,015 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:52:40,555 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:53:24,337 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:53:37,992 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 07:54:26,721 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:54:33,968 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:54:43,838 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:54:58,808 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:55:36,315 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 07:55:49,937 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 07:57:08,336 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:57:15,701 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:57:23,112 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 07:59:56,655 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:00:02,526 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:00:08,058 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:02:37,715 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:02:44,411 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:02:51,528 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:05:03,871 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:05:08,556 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:05:13,148 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:06:36,975 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:06:43,241 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:06:50,221 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:08:49,271 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:08:58,765 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:09:14,453 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:10:45,810 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:10:52,778 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:10:59,370 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:13:23,548 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:13:28,578 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:13:33,534 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:15:42,622 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:15:48,628 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:15:54,770 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:17:56,522 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:18:05,311 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:18:12,225 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:21:03,384 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:21:09,337 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:21:14,654 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:23:12,023 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:23:18,376 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:23:23,089 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:24:51,646 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:24:57,072 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:25:03,554 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:26:33,362 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:26:39,536 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:26:44,676 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:26:59,155 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 08:27:31,493 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 08:28:02,575 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 08:28:39,785 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:28:44,862 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:28:49,419 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:30:26,399 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:30:31,606 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:30:37,264 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:32:05,140 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:32:09,850 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:32:14,942 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:33:59,317 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:34:05,379 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:34:11,803 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-05 08:34:27,284 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 08:34:40,509 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 08:34:59,099 - WARNING - Attempt 3/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 20s...
+2026-04-05 08:35:19,099 - ERROR - All 3 attempts failed for _query: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions
+2026-04-05 08:35:28,624 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 08:35:41,199 - WARNING - Attempt 2/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 10s...
+2026-04-05 08:35:59,937 - WARNING - Attempt 3/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 20s...
+2026-04-05 08:36:19,938 - ERROR - All 3 attempts failed for _query: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions
+2026-04-05 08:36:28,652 - WARNING - Attempt 1/3 failed: 503 Server Error: Service Unavailable for url: https://api.x.ai/v1/chat/completions. Retrying in 5s...
+2026-04-05 08:37:06,606 - INFO - 📊 Analyzing results...
+2026-04-05 08:37:06,612 - INFO - 🎯 Calculating goal progress...
+2026-04-05 08:37:06,612 - INFO - 📅 Getting monthly aggregates (last 3 months)...
+2026-04-05 08:37:06,675 - INFO - 📊 Found 2 months of historical data for comparison
+2026-04-05 08:37:06,699 - INFO - ✅ Results saved to audit_results.json
+2026-04-05 08:37:06,699 - INFO - 📁 Archived to archives/audit_results_2026-04-05.json
+2026-04-05 08:37:06,699 - INFO - 🎨 Generating HTML dashboard...
+2026-04-05 08:37:06,700 - INFO - ✅ Dashboard saved to visibility_dashboard.html
+2026-04-05 08:37:06,700 - INFO - 📁 Archived to archives/visibility_dashboard_2026-04-05.html
+2026-04-05 08:37:06,725 - INFO - 📸 Capturing screenshot of visibility_dashboard.html...
+2026-04-05 08:37:11,194 - INFO - ✅ Screenshot saved to visibility_dashboard_2026-04-05.png
+2026-04-05 08:37:11,195 - INFO - 📁 Screenshot archived to archives/visibility_dashboard_2026-04-05.png
+2026-04-05 08:37:11,195 - INFO - 
+============================================================
+2026-04-05 08:37:11,195 - INFO - 📈 AUDIT SUMMARY
+2026-04-05 08:37:11,195 - INFO - ============================================================
+2026-04-05 08:37:11,196 - INFO - 🎯 Overall Visibility Score: 5.6%
+2026-04-05 08:37:11,196 - INFO - 🏆 Overall Ranking: #9 of 618
+2026-04-05 08:37:11,196 - INFO - 
+🎯 GOALS PROGRESS: 0/5 LLMs achieved target
+2026-04-05 08:37:11,196 - INFO -    --------------------------------------------------
+2026-04-05 08:37:11,196 - INFO -    🟡 ChatGPT: 20.8% / 40% target (52.0% progress)
+2026-04-05 08:37:11,196 - INFO -    🔴 Gemini: 0.0% / 40% target (0.0% progress)
+2026-04-05 08:37:11,196 - INFO -    🔴 Grok: 6.9% / 25% target (27.6% progress)
+2026-04-05 08:37:11,196 - INFO -    🔴 Claude: 0.0% / 25% target (0.0% progress)
+2026-04-05 08:37:11,196 - INFO -    🔴 Perplexity: 0.0% / 40% target (0.0% progress)
+2026-04-05 08:37:11,196 - INFO - 
+📊 Weekly Changes (since 2026-03-29):
+2026-04-05 08:37:11,196 - INFO -    📉 Visibility decreased by 0.2% this week
+2026-04-05 08:37:11,196 - INFO -    🏆 Ranking improved by 1 position(s)
+2026-04-05 08:37:11,196 - INFO - 
+📅 Monthly Changes (since 2026-03-08):
+2026-04-05 08:37:11,196 - INFO -    📉 Visibility decreased by 2.8% this month
+2026-04-05 08:37:11,196 - INFO -    🏆 Ranking improved by 3 position(s)
+2026-04-05 08:37:11,196 - INFO - 
+📅 Monthly Comparison (2 months):
+2026-04-05 08:37:11,197 - INFO -    Feb 2026: 9.3% visibility (Rank #12)
+2026-04-05 08:37:11,197 - INFO -    Mar 2026: 8.1% visibility (Rank #10)
+2026-04-05 08:37:11,197 - INFO - 
+📊 By LLM:
+2026-04-05 08:37:11,197 - INFO -    ChatGPT: 20.8% (↑4.8% this week) 🎯19.2% to goal (30/144 queries)
+2026-04-05 08:37:11,197 - INFO -    Gemini: 0.0% (↓1.4% this week) (0/144 queries)
+2026-04-05 08:37:11,197 - INFO -    Grok: 6.9% (↑1.3% this week) (10/144 queries)
+2026-04-05 08:37:11,197 - INFO -    Claude: 0.0% (↓6.2% this week) (0/144 queries)
+2026-04-05 08:37:11,197 - INFO -    Perplexity: 0.0% (0/144 queries)
+2026-04-05 08:37:11,197 - INFO - 
+⚠️  Weak Spots:
+2026-04-05 08:37:11,197 - INFO -    - Conversational Pain Point Queries: 0.0%
+2026-04-05 08:37:11,197 - INFO -    - How to Hire from India: 0.0%
+2026-04-05 08:37:11,197 - INFO -    - Talent Platform for Tech Companies: 1.1%
+2026-04-05 08:37:11,197 - INFO -    - Cost and Budget: 4.4%
+2026-04-05 08:37:11,197 - INFO -    - Talent Acquisition Strategies: 0.0%
+2026-04-05 08:37:11,197 - INFO -    - Hiring Managers Multi-Role: 6.7%
+2026-04-05 08:37:11,197 - INFO -    - AI-Driven Recruitment: 4.4%
+2026-04-05 08:37:11,197 - INFO -    - Competitors and Comparisons: 17.8%
+2026-04-05 08:37:11,198 - INFO -    - Direct Hiring Queries: 7.5%
+2026-04-05 08:37:11,198 - INFO -    - Vetting Process: 10.0%
+2026-04-05 08:37:11,198 - INFO -    - Top Platforms for Indian Developers: 3.3%
+2026-04-05 08:37:11,198 - INFO -    - Startup Hiring: 0.0%
+2026-04-05 08:37:11,198 - INFO - 
+✅ Audit complete!
+2026-04-05 08:37:11,198 - INFO -    Dashboard: visibility_dashboard.html
+2026-04-05 08:37:11,198 - INFO -    Raw data: audit_results.json
+2026-04-05 08:37:11,198 - INFO -    Screenshot: visibility_dashboard_2026-04-05.png
+2026-04-05 08:37:11,198 - INFO -    Archives: archives/
