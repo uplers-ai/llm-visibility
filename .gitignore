@@ -26,3 +26,6 @@ env/
 # Local test files
 test_*.py
 
+# Dashboard lives in its own repo (uplers-ai/visibility-dashboard)
+dashboard/
+

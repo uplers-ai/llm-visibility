@@ -126,6 +126,13 @@ ENABLE_GEMINI = os.getenv("ENABLE_GEMINI", "true").lower() == "true"
 ENABLE_GROK = os.getenv("ENABLE_GROK", "true").lower() == "true"  # Enabled - paid API
 ENABLE_PERPLEXITY = os.getenv("ENABLE_PERPLEXITY", "true").lower() == "true"  # Enabled - paid API
 
+# Web-search-enabled variants. Real users frequently hit these modes (ChatGPT search,
+# Gemini grounded, Claude with web search), and they produce different recommendations
+# than the base chat models. Each adds API cost; default on but easy to disable.
+ENABLE_CHATGPT_SEARCH = os.getenv("ENABLE_CHATGPT_SEARCH", "true").lower() == "true"
+ENABLE_CLAUDE_SEARCH = os.getenv("ENABLE_CLAUDE_SEARCH", "true").lower() == "true"
+ENABLE_GEMINI_SEARCH = os.getenv("ENABLE_GEMINI_SEARCH", "true").lower() == "true"
+
 # Auto-skip settings: Skip an LLM if it fails this many times consecutively
 CONSECUTIVE_FAILURES_TO_SKIP = 3
 
@@ -139,11 +146,14 @@ GOALS = {
     "overall_visibility_score": 35,  # Target overall visibility (average of all LLMs)
     "overall_rank": 10,              # Target to be in top 10 ranking
     "by_llm": {
-        "ChatGPT": 40,      # Target 40% visibility on ChatGPT
-        "Claude": 25,       # Target 25% visibility on Claude
-        "Gemini": 40,       # Target 40% visibility on Gemini
-        "Grok": 25,         # Target 25% visibility on Grok
-        "Perplexity": 40,   # Target 40% visibility on Perplexity
+        "ChatGPT": 40,            # Target 40% visibility on ChatGPT
+        "Claude": 25,             # Target 25% visibility on Claude
+        "Gemini": 40,             # Target 40% visibility on Gemini
+        "Grok": 25,               # Target 25% visibility on Grok
+        "Perplexity": 40,         # Target 40% visibility on Perplexity
+        "ChatGPT-Search": 40,     # Web-search variants
+        "Claude-Search": 25,
+        "Gemini-Search": 40,
     },
 }
 
@@ -703,20 +713,18 @@ def initialize_clients():
                 HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
             }
 
-            # System instruction for entity extraction
+            # Use the same conversational system prompt as the other LLMs so that
+            # Gemini visibility is measured on equivalent footing (was previously
+            # configured as a JSON entity extractor, which produced non-comparable data).
             system_instruction = (
-                "You are an expert business analyst. Identify mentions of specific entities. "
-                "Return ONLY a valid JSON list of strings. If none, return []."
+                f"You are a helpful assistant. The user is based in {TARGET_REGION}. "
+                "When recommending platforms or companies, please be specific and name them."
             )
 
-            # UPDATED MODEL NAME FOR 2026
-            # Use 'gemini-2.5-flash' for the best balance of speed and intelligence.
-            # Alternatively, use 'gemini-2.0-flash-001' for high-throughput legacy support.
             gemini_model = genai.GenerativeModel(
                 model_name='gemini-2.5-flash',
                 safety_settings=safety_settings,
                 system_instruction=system_instruction,
-                generation_config={"response_mime_type": "application/json"}
             )
             clients_available.append("Google")
             logger.info("✅ Google Gemini client initialized with 2026 model (gemini-2.5-flash)")
@@ -775,7 +783,7 @@ def query_anthropic(prompt: str) -> str:
     
     def _query():
         response = anthropic_client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-sonnet-4-6",
             max_tokens=1500,
             system=f"You are a helpful assistant. The user is based in {TARGET_REGION}. When recommending platforms or companies, please be specific and name them.",
             messages=[
@@ -814,22 +822,8 @@ def query_gemini(prompt: str) -> str:
                     logger.warning(f"⚠️  Gemini: Safety Ratings: {safety_ratings}")
                 return ""
             
-            # Safely access text only if it exists
             if response.candidates[0].content.parts:
-                json_text = response.text
-                
-                # Parse JSON response and convert to readable text format
-                try:
-                    entities = json.loads(json_text)
-                    if isinstance(entities, list) and len(entities) > 0:
-                        # Format as readable text for extract_companies to parse
-                        return ", ".join(entities)
-                    else:
-                        return ""
-                except json.JSONDecodeError:
-                    # If JSON parsing fails, return raw text
-                    logger.warning("⚠️  Gemini: Failed to parse JSON response, returning raw text")
-                    return json_text
+                return response.text
             else:
                 logger.warning("⚠️  Gemini: Response parts are empty.")
                 return ""
@@ -852,7 +846,7 @@ def query_grok(prompt: str) -> str:
             "Content-Type": "application/json"
         }
         data = {
-            "model": "grok-3-latest",
+            "model": "grok-4-latest",
             "messages": [
                 {"role": "system", "content": f"You are a helpful assistant. The user is based in {TARGET_REGION}. When recommending platforms or companies, please be specific and name them."},
                 {"role": "user", "content": prompt}
@@ -902,131 +896,294 @@ def query_perplexity(prompt: str) -> str:
     
     return retry_with_backoff(_query)()
 
+# Curated platform patterns. Each value is a list of regex fragments that are
+# anchored with \b...\b and matched case-insensitively. Brand names that collide
+# with common English words (Arc, Remote, Indeed, Hired, Crossover, Shine, Monster,
+# Dice, Lever, Multiplier, Greenhouse, Workable, Karat) are restricted to
+# domain-anchored variants so we don't count incidental English usage.
+_PLATFORM_PATTERN_SOURCES = {
+    "Uplers": [r"uplers(?:\.com)?"],
+    "Toptal": [r"toptal(?:\.com)?"],
+    "Turing": [r"turing(?:\.com)?"],
+    "Andela": [r"andela(?:\.com)?"],
+    "CloudDevs": [r"clouddevs(?:\.com)?", r"cloud devs"],
+    "Terminal.io": [r"terminal\.io"],
+    "Gun.io": [r"gun\.io", r"gunio"],
+    "Lemon.io": [r"lemon\.io"],
+    "BairesDev": [r"bairesdev(?:\.com)?", r"baires dev"],
+    "Revelo": [r"revelo(?:\.com)?"],
+    "Supersourcing": [r"supersourcing", r"super sourcing"],
+    "Gigster": [r"gigster(?:\.com)?"],
+    "Deel": [r"deel\.com"],
+    "Oyster": [r"oysterhr", r"oyster hr", r"oyster\.com"],
+    "Globalization Partners": [r"globalization partners", r"g-p\.com"],
+    "Fiverr": [r"fiverr(?:\.com)?"],
+    "Upwork": [r"upwork(?:\.com)?"],
+    "Freelancer.com": [r"freelancer\.com", r"freelancer\.in"],
+    "LinkedIn": [r"linkedin(?:\.com)?"],
+    "Triplebyte": [r"triplebyte"],
+    "Vettery": [r"vettery"],
+    "X-Team": [r"x-team", r"xteam"],
+    "Scalable Path": [r"scalable ?path"],
+    "Codementor": [r"codementor(?:x)?"],
+    "RemoteOK": [r"remoteok", r"remote ok"],
+    "We Work Remotely": [r"we work remotely", r"weworkremotely"],
+    "AngelList / Wellfound": [r"angellist", r"angel list", r"wellfound"],
+    "Naukri": [r"naukri(?:\.com)?"],
+    "TalentScale": [r"talentscale", r"talent scale"],
+    "Flexiple": [r"flexiple"],
+    "RemotePanda": [r"remotepanda", r"remote panda"],
+    "HackerRank": [r"hackerrank", r"hacker rank"],
+    "CodeSignal": [r"codesignal", r"code signal"],
+    "Talent500": [r"talent500", r"talent 500"],
+    "Pesto": [r"pesto\.tech"],
+    "GeeksforGeeks Jobs": [r"geeksforgeeks", r"gfg jobs"],
+    "Instahyre": [r"instahyre"],
+    "Hirect": [r"hirect"],
+    "Cutshort": [r"cutshort"],
+    "Hirist": [r"hirist"],
+    "iimjobs": [r"iimjobs"],
+    "Freshersworld": [r"freshersworld"],
+    "Glassdoor": [r"glassdoor"],
+    "ZipRecruiter": [r"ziprecruiter", r"zip recruiter"],
+    "SimplyHired": [r"simplyhired", r"simply hired"],
+    "CareerBuilder": [r"careerbuilder", r"career builder"],
+    "Snaphunt": [r"snaphunt"],
+    "Recruiterflow": [r"recruiterflow"],
+    "Zoho Recruit": [r"zoho recruit"],
+    "BambooHR": [r"bamboohr", r"bamboo hr"],
+    "JazzHR": [r"jazzhr", r"jazz hr"],
+    # Domain-anchored only — bare name is a common English word
+    "Arc.dev": [r"arc\.dev"],
+    "Remote.com": [r"remote\.com", r"remote\.co"],
+    "Indeed.com": [r"indeed\.com"],
+    "Hired.com": [r"hired\.com"],
+    "Crossover": [r"crossover\.com"],
+    "Shine.com": [r"shine\.com"],
+    "Monster.com": [r"monster\.com", r"monster india"],
+    "Dice.com": [r"dice\.com"],
+    "Lever": [r"lever\.co"],
+    "Multiplier": [r"multiplier\.com"],
+    "Greenhouse": [r"greenhouse\.io"],
+    "Workable": [r"workable\.com"],
+    "Karat": [r"karat\.com", r"karat\.io"],
+    "Stack Overflow Jobs": [r"stack overflow jobs", r"stackoverflow jobs"],
+    "GitHub Jobs": [r"github jobs"],
+}
+
+PLATFORM_PATTERNS = {
+    name: [re.compile(r"\b(?:" + p + r")\b", re.IGNORECASE) for p in patterns]
+    for name, patterns in _PLATFORM_PATTERN_SOURCES.items()
+}
+
+
+def query_openai_search(prompt: str) -> str:
+    """Query OpenAI GPT-4.1 with the Responses API's built-in web_search tool."""
+    if not openai_client:
+        return ""
+
+    def _query():
+        instructions = (
+            f"You are a helpful assistant. The user is based in {TARGET_REGION}. "
+            "When recommending platforms or companies, please be specific and name them."
+        )
+        response = openai_client.responses.create(
+            model="gpt-4.1",
+            tools=[{"type": "web_search_preview"}],
+            instructions=instructions,
+            input=prompt,
+            max_output_tokens=1500,
+        )
+        # Prefer the consolidated `output_text` helper when available
+        text = getattr(response, "output_text", None)
+        if text:
+            return text
+        chunks = []
+        for item in getattr(response, "output", []) or []:
+            for piece in getattr(item, "content", []) or []:
+                t = getattr(piece, "text", None)
+                if t:
+                    chunks.append(t)
+        return "\n".join(chunks)
+
+    return retry_with_backoff(_query)()
+
+
+def query_anthropic_search(prompt: str) -> str:
+    """Query Claude with the web_search tool enabled."""
+    if not anthropic_client:
+        return ""
+
+    def _query():
+        response = anthropic_client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=1500,
+            system=(
+                f"You are a helpful assistant. The user is based in {TARGET_REGION}. "
+                "When recommending platforms or companies, please be specific and name them."
+            ),
+            messages=[{"role": "user", "content": prompt}],
+            tools=[{
+                "type": "web_search_20250305",
+                "name": "web_search",
+                "max_uses": 5,
+            }],
+        )
+        chunks = []
+        for block in response.content:
+            text = getattr(block, "text", None)
+            if text:
+                chunks.append(text)
+        return "\n".join(chunks)
+
+    return retry_with_backoff(_query)()
+
+
+def query_gemini_search(prompt: str) -> str:
+    """Query Gemini with Google Search grounding via the new google-genai SDK.
+
+    The deprecated `google.generativeai` package does not support the
+    `google_search` grounding tool for Gemini 2.5, so this channel uses the
+    current `google-genai` SDK. Requires GOOGLE_API_KEY and ENABLE_GEMINI.
+    """
+    if not gemini_model:  # base Gemini must be available (shares the same key)
+        return ""
+
+    def _query():
+        time.sleep(2)  # Google free tier rate limits
+        try:
+            from google import genai as google_genai
+            from google.genai import types as genai_types
+        except ImportError:
+            logger.warning("⚠️  google-genai package not installed; skipping Gemini-Search. "
+                           "Run: pip install google-genai")
+            return ""
+
+        try:
+            client = google_genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt,
+                config=genai_types.GenerateContentConfig(
+                    system_instruction=(
+                        f"You are a helpful assistant. The user is based in {TARGET_REGION}. "
+                        "When recommending platforms or companies, please be specific and name them."
+                    ),
+                    tools=[genai_types.Tool(google_search=genai_types.GoogleSearch())],
+                ),
+            )
+            return response.text or ""
+        except Exception as e:
+            logger.error(f"❌ Error querying Gemini-Search: {e}")
+            return ""
+
+    return retry_with_backoff(_query)()
+
+
 def extract_companies(text: str) -> dict:
-    """Extract company/platform mentions from text dynamically."""
+    """Return {platform_name: mention_count} for the curated platform list.
+
+    Word-boundary regex matching; ambiguous brand names (Arc, Remote, Indeed, etc.)
+    are restricted to domain-anchored variants to avoid false positives.
+    """
     if not text:
         return {}
-    
     mentions = {}
-    text_lower = text.lower()
-    
-    # 1. First check known platforms with variations
-    platform_variations = {
-        "Uplers": ["uplers", "uplers.com", "uplers AI hiring platform", "uplers ai", "uplers platform", "uplers talent"],
-        "Toptal": ["toptal", "toptal.com"],
-        "Turing": ["turing", "turing.com"],
-        "Andela": ["andela", "andela.com"],
-        "Arc": ["arc.dev", "arc dev"],
-        "CloudDevs": ["clouddevs", "cloud devs", "clouddevs.com"],
-        "Terminal": ["terminal.io", "terminal io"],
-        "Gun.io": ["gun.io", "gun io", "gunio"],
-        "Lemon.io": ["lemon.io", "lemon io", "lemonpicker"],
-        "BairesDev": ["bairesdev", "baires dev", "bairesdev.com"],
-        "Revelo": ["revelo", "revelo.com"],
-        "Supersourcing": ["supersourcing", "super sourcing"],
-        "Gigster": ["gigster", "gigster.com"],
-        "Multiplier": ["multiplier", "multiplier.com"],
-        "Remote": ["remote.com", "remote.co"],
-        "Deel": ["deel", "deel.com"],
-        "Oyster": ["oyster", "oysterhr", "oyster hr"],
-        "Globalization Partners": ["globalization partners", "g-p.com", "g-p"],
-        "Fiverr": ["fiverr", "fiverr.com"],
-        "Upwork": ["upwork", "upwork.com"],
-        "Freelancer": ["freelancer.com", "freelancer.in"],
-        "LinkedIn": ["linkedin", "linkedin.com"],
-        "Indeed": ["indeed", "indeed.com"],
-        "Hired": ["hired.com", "hired platform"],
-        "Triplebyte": ["triplebyte"],
-        "Vettery": ["vettery"],
-        "Crossover": ["crossover", "crossover.com"],
-        "X-Team": ["x-team", "xteam"],
-        "Scalable Path": ["scalable path", "scalablepath"],
-        "Codementor": ["codementor", "codementorx"],
-        "RemoteOK": ["remoteok", "remote ok"],
-        "We Work Remotely": ["we work remotely", "weworkremotely"],
-        "AngelList": ["angellist", "angel list", "wellfound"],
-        "Stack Overflow Jobs": ["stack overflow jobs", "stackoverflow jobs"],
-        "GitHub Jobs": ["github jobs"],
-        "Dice": ["dice.com"],
-        "Naukri": ["naukri", "naukri.com"],
-        "TalentScale": ["talentscale", "talent scale"],
-        "Flexiple": ["flexiple"],
-        "RemotePanda": ["remotepanda", "remote panda"],
-        "HackerRank": ["hackerrank", "hacker rank"],
-        "CodeSignal": ["codesignal", "code signal"],
-        "Karat": ["karat"],
-        "Wework": ["wework"],
-        "Talent500": ["talent500", "talent 500"],
-        "Pesto": ["pesto.tech", "pesto tech"],
-        "GeeksforGeeks": ["geeksforgeeks", "gfg jobs"],
-        "Instahyre": ["instahyre"],
-        "Hirect": ["hirect"],
-        "Cutshort": ["cutshort"],
-        "Hirist": ["hirist"],
-        "iimjobs": ["iimjobs"],
-        "Freshersworld": ["freshersworld"],
-        "Shine": ["shine.com"],
-        "Monster": ["monster.com", "monster india"],
-        "Glassdoor": ["glassdoor"],
-        "ZipRecruiter": ["ziprecruiter", "zip recruiter"],
-        "SimplyHired": ["simplyhired", "simply hired"],
-        "CareerBuilder": ["careerbuilder", "career builder"],
-        "Snaphunt": ["snaphunt"],
-        "Workable": ["workable"],
-        "Lever": ["lever.co", "lever hiring"],
-        "Greenhouse": ["greenhouse.io", "greenhouse"],
-        "Recruiterflow": ["recruiterflow"],
-        "Zoho Recruit": ["zoho recruit"],
-        "Bamboo HR": ["bamboohr", "bamboo hr"],
-        "JazzHR": ["jazzhr", "jazz hr"],
-    }
-    
-    for platform, patterns in platform_variations.items():
-        count = 0
-        for pattern in patterns:
-            pattern_lower = pattern.lower()
-            # Use word boundaries for short patterns
-            if len(pattern_lower) <= 4:
-                count += len(re.findall(r'\b' + re.escape(pattern_lower) + r'\b', text_lower))
-            else:
-                count += text_lower.count(pattern_lower)
-        
+    for name, patterns in PLATFORM_PATTERNS.items():
+        count = sum(len(p.findall(text)) for p in patterns)
         if count > 0:
-            mentions[platform] = count
-    
-    # 2. Also extract URLs/domains that might be platforms (*.io, *.com, *.dev)
-    url_patterns = re.findall(r'\b([a-zA-Z][a-zA-Z0-9]*(?:\.[a-zA-Z0-9]+)*\.(?:io|com|dev|co|tech|ai))\b', text, re.IGNORECASE)
-    for url in url_patterns:
-        # Extract platform name from URL
-        platform_name = url.split('.')[0].capitalize()
-        if platform_name not in mentions and len(platform_name) > 2:
-            # Check it's not already counted under a known name
-            already_counted = False
-            for known in mentions.keys():
-                if platform_name.lower() in known.lower() or known.lower() in platform_name.lower():
-                    already_counted = True
-                    break
-            if not already_counted:
-                mentions[url] = 1
-    
-    # 3. Look for numbered list items that might be platform names (e.g., "1. Toptal", "- Uplers")
-    list_patterns = re.findall(r'(?:^|\n)\s*(?:\d+[\.\)]\s*|[-•*]\s*)([A-Z][a-zA-Z0-9\.\-]+(?:\s+[A-Z][a-zA-Z0-9\.\-]+)?)', text)
-    for item in list_patterns:
-        item_clean = item.strip()
-        if len(item_clean) > 2 and item_clean not in mentions:
-            # Check if it looks like a company name (not common words)
-            common_words = ['the', 'and', 'for', 'with', 'from', 'this', 'that', 'they', 'have', 'will', 'can', 'how', 'what', 'when', 'where', 'which', 'best', 'top', 'good', 'great', 'here', 'some', 'many', 'most', 'also', 'other', 'more', 'very', 'just', 'only', 'even', 'such', 'like', 'well', 'back', 'been', 'being', 'both', 'each', 'find', 'first', 'get', 'give', 'go', 'look', 'make', 'need', 'new', 'now', 'over', 'see', 'take', 'time', 'want', 'way', 'work', 'year', 'know', 'could', 'into', 'than', 'then', 'them', 'these', 'think', 'through', 'would', 'about', 'after', 'before', 'between', 'come', 'down', 'during', 'high', 'long', 'made', 'part', 'people', 'place', 'same', 'should', 'still', 'under', 'while', 'again', 'against', 'below', 'between', 'different', 'does', 'doing', 'done', 'enough', 'every', 'example', 'following', 'found', 'further', 'given', 'going', 'great', 'high', 'higher', 'however', 'important', 'including', 'large', 'later', 'less', 'little', 'local', 'looking', 'lower', 'major', 'making', 'must', 'never', 'number', 'often', 'open', 'possible', 'present', 'rather', 'recent', 'right', 'second', 'several', 'since', 'small', 'social', 'something', 'special', 'state', 'states', 'sure', 'system', 'things', 'those', 'three', 'today', 'together', 'trying', 'using', 'various', 'ways', 'within', 'without', 'working', 'world', 'years', 'young', 'software', 'developer', 'developers', 'engineer', 'engineers', 'platform', 'platforms', 'hiring', 'hire', 'talent', 'remote', 'india', 'indian', 'company', 'companies', 'based', 'services', 'service']
-            if item_clean.lower() not in common_words:
-                # Check it's not already a known platform
-                already_counted = False
-                for known in mentions.keys():
-                    if item_clean.lower() == known.lower():
-                        already_counted = True
-                        break
-                if not already_counted:
-                    mentions[item_clean] = 1
-    
+            mentions[name] = count
     return mentions
+
+
+def extract_company_positions(text: str) -> list:
+    """Return platforms in order of first appearance in the response.
+
+    Drives the position-weighted Share of Voice metric — earlier mention = stronger
+    signal that the LLM is recommending that platform first.
+    """
+    if not text:
+        return []
+    first_offsets = {}
+    for name, patterns in PLATFORM_PATTERNS.items():
+        earliest = None
+        for p in patterns:
+            m = p.search(text)
+            if m and (earliest is None or m.start() < earliest):
+                earliest = m.start()
+        if earliest is not None:
+            first_offsets[name] = earliest
+    return [name for name, _ in sorted(first_offsets.items(), key=lambda x: x[1])]
+
+_SENTIMENT_POSITIVE = {
+    "best", "top", "leading", "excellent", "strong", "recommended", "recommend",
+    "great", "trusted", "reliable", "premier", "preferred", "rigorous", "robust",
+    "high-quality", "vetted", "proven", "popular", "outstanding", "favourite",
+    "favorite", "go-to", "ideal", "powerful", "innovative",
+}
+_SENTIMENT_NEGATIVE = {
+    "avoid", "poor", "weak", "slow", "expensive", "unreliable", "limited",
+    "lacking", "outdated", "inferior", "questionable", "spotty", "shaky",
+    "mediocre", "subpar", "concerns", "concern", "issues", "downside", "cons",
+}
+
+
+def _rule_based_sentiment(response_text: str) -> str:
+    """Cheap keyword-window fallback when no LLM is available for classification."""
+    if not response_text:
+        return None
+    lower = response_text.lower()
+    needle = TARGET_COMPANY.lower()
+    pos_score = neg_score = 0
+    start = 0
+    while True:
+        idx = lower.find(needle, start)
+        if idx == -1:
+            break
+        window = lower[max(0, idx - 150):idx + 150]
+        for w in _SENTIMENT_POSITIVE:
+            pos_score += window.count(w)
+        for w in _SENTIMENT_NEGATIVE:
+            neg_score += window.count(w)
+        start = idx + len(needle)
+    if pos_score > neg_score:
+        return "positive"
+    if neg_score > pos_score:
+        return "negative"
+    return "neutral"
+
+
+def classify_target_sentiment(response_text: str) -> str:
+    """Classify how the response talks about the target brand (positive/neutral/negative).
+
+    Uses a cheap OpenAI call when available, otherwise falls back to a keyword-window
+    heuristic. Returns None if no signal can be derived.
+    """
+    if not response_text or TARGET_COMPANY.lower() not in response_text.lower():
+        return None
+
+    if openai_client:
+        try:
+            classification = openai_client.chat.completions.create(
+                model="gpt-4.1-mini",
+                temperature=0,
+                max_tokens=4,
+                messages=[
+                    {"role": "system", "content": (
+                        f"Classify how the following text discusses '{TARGET_COMPANY}'. "
+                        "Reply with exactly one word: positive, neutral, or negative."
+                    )},
+                    {"role": "user", "content": response_text[:4000]},
+                ],
+            )
+            label = (classification.choices[0].message.content or "").strip().lower()
+            if label in ("positive", "neutral", "negative"):
+                return label
+        except Exception as e:
+            logger.debug(f"Sentiment LLM call failed, falling back to heuristic: {e}")
+
+    return _rule_based_sentiment(response_text)
+
 
 def run_single_query(llm_name: str, prompt: str, intent: str, run_num: int):
     """Run a single query and return results."""
@@ -1037,7 +1194,10 @@ def run_single_query(llm_name: str, prompt: str, intent: str, run_num: int):
         "Claude": query_anthropic,
         "Gemini": query_gemini,
         "Grok": query_grok,
-        "Perplexity": query_perplexity
+        "Perplexity": query_perplexity,
+        "ChatGPT-Search": query_openai_search,
+        "Claude-Search": query_anthropic_search,
+        "Gemini-Search": query_gemini_search,
     }
     
     # Check if this LLM should be skipped due to consecutive failures
@@ -1050,14 +1210,18 @@ def run_single_query(llm_name: str, prompt: str, intent: str, run_num: int):
             "run": run_num,
             "response": "",
             "companies_mentioned": {},
+            "companies_ranked": [],
             "target_mentioned": False,
+            "target_rank_in_response": None,
+            "target_sentiment": None,
             "timestamp": datetime.now().isoformat(),
             "skipped": True
         }
-    
+
     response = query_funcs[llm_name](prompt)
     companies = extract_companies(response)
-    
+    ranked = extract_company_positions(response)
+
     # Track failures for auto-skip
     if not response:
         llm_failure_counts[llm_name] = llm_failure_counts.get(llm_name, 0) + 1
@@ -1066,13 +1230,11 @@ def run_single_query(llm_name: str, prompt: str, intent: str, run_num: int):
     else:
         # Reset failure count on success
         llm_failure_counts[llm_name] = 0
-    
-    # Check if target is mentioned (case-insensitive check)
-    target_mentioned = any(
-        TARGET_COMPANY.lower() in company.lower() or company.lower() in TARGET_COMPANY.lower()
-        for company in companies.keys()
-    )
-    
+
+    target_mentioned = TARGET_COMPANY in companies
+    target_rank_in_response = (ranked.index(TARGET_COMPANY) + 1) if TARGET_COMPANY in ranked else None
+    target_sentiment = classify_target_sentiment(response) if target_mentioned else None
+
     return {
         "llm": llm_name,
         "intent": intent,
@@ -1080,7 +1242,10 @@ def run_single_query(llm_name: str, prompt: str, intent: str, run_num: int):
         "run": run_num,
         "response": response,
         "companies_mentioned": companies,
+        "companies_ranked": ranked,
         "target_mentioned": target_mentioned,
+        "target_rank_in_response": target_rank_in_response,
+        "target_sentiment": target_sentiment,
         "timestamp": datetime.now().isoformat()
     }
 
@@ -1107,10 +1272,16 @@ def run_audit():
     llms_to_query = []
     if "OpenAI" in available_clients:
         llms_to_query.append("ChatGPT")
+        if ENABLE_CHATGPT_SEARCH:
+            llms_to_query.append("ChatGPT-Search")
     if "Anthropic" in available_clients:
         llms_to_query.append("Claude")
+        if ENABLE_CLAUDE_SEARCH:
+            llms_to_query.append("Claude-Search")
     if "Google" in available_clients:
         llms_to_query.append("Gemini")
+        if ENABLE_GEMINI_SEARCH:
+            llms_to_query.append("Gemini-Search")
     if "xAI" in available_clients:
         llms_to_query.append("Grok")
     if "Perplexity" in available_clients:
@@ -1126,30 +1297,44 @@ def run_audit():
     print(f"📊 Running {total_queries} queries ({len(all_prompts)} prompts × {len(llms_to_query)} LLMs × {RUNS_PER_PROMPT} runs)")
     print(f"⏱️  Estimated time: {total_queries * 2 // 60} - {total_queries * 4 // 60} minutes\n")
     
+    # Fan out across LLMs (per-LLM rate limits are independent) while keeping
+    # runs for the same LLM serial — sequential runs help respect each provider's
+    # rate window and preserve the auto-skip-on-consecutive-failures logic.
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
     results = []
     completed = 0
-    
-    for intent, prompt in all_prompts:
-        for llm in llms_to_query:
-            for run_num in range(1, RUNS_PER_PROMPT + 1):
-                try:
-                    result = run_single_query(llm, prompt, intent, run_num)
-                    results.append(result)
-                    completed += 1
-                    
-                    # Progress indicator
-                    target_status = "✓" if result["target_mentioned"] else "✗"
-                    platforms_found = list(result["companies_mentioned"].keys())[:5]  # Show first 5
-                    platforms_str = ", ".join(platforms_found) if platforms_found else "None"
-                    print(f"[{completed}/{total_queries}] {llm} | {intent[:20]:20} | Target: {target_status} | Found: {platforms_str}")
-                    
-                    # Rate limiting
-                    time.sleep(1)  # Adjust based on your rate limits
-                    
-                except Exception as e:
-                    print(f"Error: {e}")
+    lock_print = __import__('threading').Lock()
+
+    def _run_llm_sequence(llm, intent, prompt):
+        rows = []
+        for run_num in range(1, RUNS_PER_PROMPT + 1):
+            try:
+                rows.append(run_single_query(llm, prompt, intent, run_num))
+            except Exception as e:
+                with lock_print:
+                    print(f"Error in {llm} for '{prompt[:40]}...': {e}")
                     traceback.print_exc()
-    
+        return rows
+
+    with ThreadPoolExecutor(max_workers=max(1, len(llms_to_query))) as pool:
+        for intent, prompt in all_prompts:
+            futures = {
+                pool.submit(_run_llm_sequence, llm, intent, prompt): llm
+                for llm in llms_to_query
+            }
+            for fut in as_completed(futures):
+                llm = futures[fut]
+                rows = fut.result()
+                results.extend(rows)
+                with lock_print:
+                    for result in rows:
+                        completed += 1
+                        target_status = "✓" if result["target_mentioned"] else "✗"
+                        platforms_found = list(result["companies_mentioned"].keys())[:5]
+                        platforms_str = ", ".join(platforms_found) if platforms_found else "None"
+                        print(f"[{completed}/{total_queries}] {llm:16} | {intent[:20]:20} | Target: {target_status} | Found: {platforms_str}")
+
     return results
 
 def analyze_results(results: list) -> dict:
@@ -1209,40 +1394,93 @@ def analyze_results(results: list) -> dict:
                 "sample_prompts": list(set(r["prompt"] for r in intent_results))[:3]
             })
     
-    # Company rankings (overall)
-    company_counts = defaultdict(int)
-    for result in results:
-        for company, count in result["companies_mentioned"].items():
-            company_counts[company] += count
-    
-    sorted_companies = sorted(company_counts.items(), key=lambda x: x[1], reverse=True)
-    analysis["company_rankings"]["overall"] = [
-        {"company": c, "mentions": m, "rank": i+1} 
-        for i, (c, m) in enumerate(sorted_companies)
-    ]
-    
-    # Find target's rank
+    # Sentiment aggregation for target mentions
+    sentiment_counts = defaultdict(int)
+    for r in results:
+        s = r.get("target_sentiment")
+        if s:
+            sentiment_counts[s] += 1
+    total_with_sentiment = sum(sentiment_counts.values())
+    analysis["overall"]["sentiment"] = {
+        "positive": sentiment_counts.get("positive", 0),
+        "neutral": sentiment_counts.get("neutral", 0),
+        "negative": sentiment_counts.get("negative", 0),
+        "scored_mentions": total_with_sentiment,
+    }
+
+    def _aggregate_company_metrics(rows):
+        counts = defaultdict(int)
+        sov_score = defaultdict(float)
+        for row in rows:
+            for company, count in row["companies_mentioned"].items():
+                counts[company] += count
+            for rank, company in enumerate(row.get("companies_ranked") or [], start=1):
+                # Position decay: 1/rank — first mention = 1.0, second = 0.5, etc.
+                sov_score[company] += 1.0 / rank
+        total_sov = sum(sov_score.values()) or 1.0
+        ranked = sorted(
+            counts.keys() | sov_score.keys(),
+            key=lambda c: (sov_score[c], counts[c]),
+            reverse=True,
+        )
+        return [
+            {
+                "company": c,
+                "mentions": counts[c],
+                "sov_score": round(sov_score[c], 3),
+                "sov_share": round(sov_score[c] / total_sov * 100, 2),
+                "rank": i + 1,
+            }
+            for i, c in enumerate(ranked)
+        ]
+
+    overall_rankings = _aggregate_company_metrics(results)
+    analysis["company_rankings"]["overall"] = overall_rankings
+
     target_rank = next(
-        (i+1 for i, (c, _) in enumerate(sorted_companies) if c == TARGET_COMPANY),
-        len(sorted_companies) + 1
+        (entry["rank"] for entry in overall_rankings if entry["company"] == TARGET_COMPANY),
+        len(overall_rankings) + 1,
+    )
+    target_sov = next(
+        (entry["sov_share"] for entry in overall_rankings if entry["company"] == TARGET_COMPANY),
+        0.0,
     )
     analysis["overall"]["target_rank"] = target_rank
-    analysis["overall"]["total_companies_mentioned"] = len(sorted_companies)
-    
-    # Company rankings by LLM
+    analysis["overall"]["target_sov_share"] = target_sov
+    analysis["overall"]["total_companies_mentioned"] = len(overall_rankings)
+
+    # Average rank-when-mentioned (lower = better, only counts responses where target appeared)
+    ranks_when_mentioned = [
+        r["target_rank_in_response"]
+        for r in results
+        if r.get("target_rank_in_response")
+    ]
+    analysis["overall"]["avg_rank_when_mentioned"] = (
+        round(sum(ranks_when_mentioned) / len(ranks_when_mentioned), 2)
+        if ranks_when_mentioned else None
+    )
+
+    # Per-LLM rankings + SoV
     for llm in analysis["meta"]["llms_tested"]:
         llm_results = [r for r in results if r["llm"] == llm]
-        llm_counts = defaultdict(int)
-        for result in llm_results:
-            for company, count in result["companies_mentioned"].items():
-                llm_counts[company] += count
-        
-        sorted_llm = sorted(llm_counts.items(), key=lambda x: x[1], reverse=True)
-        analysis["company_rankings"][llm] = [
-            {"company": c, "mentions": m, "rank": i+1} 
-            for i, (c, m) in enumerate(sorted_llm)
+        llm_rankings = _aggregate_company_metrics(llm_results)
+        analysis["company_rankings"][llm] = llm_rankings
+
+        llm_sov = next(
+            (e["sov_share"] for e in llm_rankings if e["company"] == TARGET_COMPANY),
+            0.0,
+        )
+        analysis["by_llm"][llm]["sov_share"] = llm_sov
+
+        llm_ranks = [
+            r["target_rank_in_response"]
+            for r in llm_results
+            if r.get("target_rank_in_response")
         ]
-    
+        analysis["by_llm"][llm]["avg_rank_when_mentioned"] = (
+            round(sum(llm_ranks) / len(llm_ranks), 2) if llm_ranks else None
+        )
+
     return analysis
 
 def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict = None, monthly_changes: dict = None, trend_data: list = None, goal_progress: dict = None, monthly_aggregates: list = None) -> str:
@@ -1855,12 +2093,22 @@ def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict 
                 <div class="detail">out of {analysis["overall"]["total_companies_mentioned"]} companies mentioned</div>
             </div>
             <div class="score-card">
+                <div class="label">Share of Voice</div>
+                <div class="value accent">{analysis["overall"].get("target_sov_share", 0)}%</div>
+                <div class="detail">Position-weighted (1/rank) across all responses</div>
+            </div>
+            <div class="score-card">
+                <div class="label">Avg Rank When Mentioned</div>
+                <div class="value">{analysis["overall"].get("avg_rank_when_mentioned") or "—"}</div>
+                <div class="detail">Lower is better — where Uplers lands in lists</div>
+            </div>
+            <div class="score-card">
                 <div class="label">Intent Categories</div>
                 <div class="value">{len(analysis["by_intent"])}</div>
                 <div class="detail">{len(analysis["weak_spots"])} weak spots identified</div>
             </div>
         </div>
-        
+
         <!-- Weekly/Monthly Changes Section -->
         <div class="changes-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 48px;">
 '''
@@ -2242,6 +2490,37 @@ def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict 
         </div>
 '''
     
+    # Sentiment breakdown
+    sentiment = analysis["overall"].get("sentiment") or {}
+    if sentiment.get("scored_mentions"):
+        total = max(1, sentiment["scored_mentions"])
+        pos_pct = round(sentiment["positive"] / total * 100, 1)
+        neu_pct = round(sentiment["neutral"] / total * 100, 1)
+        neg_pct = round(sentiment["negative"] / total * 100, 1)
+        html += f'''
+        <div class="section-header">
+            <h2>Sentiment of {TARGET_COMPANY} Mentions</h2>
+            <div class="line"></div>
+        </div>
+        <div class="score-grid" style="margin-bottom: 48px;">
+            <div class="score-card">
+                <div class="label">Positive</div>
+                <div class="value accent">{pos_pct}%</div>
+                <div class="detail">{sentiment["positive"]} of {sentiment["scored_mentions"]} mentions</div>
+            </div>
+            <div class="score-card">
+                <div class="label">Neutral</div>
+                <div class="value">{neu_pct}%</div>
+                <div class="detail">{sentiment["neutral"]} of {sentiment["scored_mentions"]} mentions</div>
+            </div>
+            <div class="score-card">
+                <div class="label">Negative</div>
+                <div class="value" style="color: var(--danger);">{neg_pct}%</div>
+                <div class="detail">{sentiment["negative"]} of {sentiment["scored_mentions"]} mentions</div>
+            </div>
+        </div>
+'''
+
     # Weak Spots Section
     if analysis["weak_spots"]:
         html += '''
@@ -2280,19 +2559,20 @@ def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict 
     
     for item in analysis["company_rankings"]["overall"][:30]:
         is_target = "target" if item["company"] == TARGET_COMPANY else ""
+        sov = item.get("sov_share", 0)
         html += f'''
                     <div class="ranking-item {is_target}">
                         <div class="rank-num">{item["rank"]}</div>
                         <span class="company-name">{item["company"]}</span>
-                        <span class="mention-count">{item["mentions"]} mentions</span>
+                        <span class="mention-count">{sov}% SoV · {item["mentions"]} mentions</span>
                     </div>
 '''
-    
+
     html += '''
                 </div>
             </div>
 '''
-    
+
     # Add per-LLM rankings
     for llm in analysis["meta"]["llms_tested"]:
         if llm in analysis["company_rankings"]:
@@ -2303,11 +2583,12 @@ def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict 
 '''
             for item in analysis["company_rankings"][llm][:20]:
                 is_target = "target" if item["company"] == TARGET_COMPANY else ""
+                sov = item.get("sov_share", 0)
                 html += f'''
                     <div class="ranking-item {is_target}">
                         <div class="rank-num">{item["rank"]}</div>
                         <span class="company-name">{item["company"]}</span>
-                        <span class="mention-count">{item["mentions"]} mentions</span>
+                        <span class="mention-count">{sov}% SoV · {item["mentions"]} mentions</span>
                     </div>
 '''
             html += '''
