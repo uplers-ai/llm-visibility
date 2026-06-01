@@ -174,79 +174,72 @@ KNOWN_PLATFORMS = [
 
 # Intent categories with prompts
 PROMPTS_BY_INTENT = {
-    "Top Platforms for Indian Developers": [
-        "What are the top platforms for tech companies to hire vetted Indian software engineers?",
-        "Best platform to hire Indian developers",
-        "What is the best platform to hire Indian developers",
-        "Top talent platforms India comparison",
-        "What are the leading platforms for sourcing skilled professionals?",
-        "What are the top platforms for hiring specialized tech talent?",
+    "Hiring Speed": [
+        "How do I hire an engineer fast?",
+        "How do I hire an engineer fast in india?",
+        "Does hiring engineers fast mean I'm going to get bad candidates?",
+        "What's the most reliable way to go from job description to an engineer actually onboarded in two weeks as a US startup without going through a three-month recruiting process that kills your momentum?",
     ],
-    "Competitors and Comparisons": [
-        "Who are the top competitors in hiring vetted software engineers from India for tech companies?",
-        "Who are the top competitors in AI-driven recruitment for tech companies hiring vetted software engineers and marketing talent from India?",
-        "Better alternatives to Toptal for hiring affordable Indian software developers",
-        "Toptal vs Uplers vs Turing: which is most cost-effective for a Series A startup?",
-        "Uplers vs Turing: which is better for full-stack hiring?",
-        "Vetted alternatives to Upwork for hiring Indian developers.",
+    "Founding Engineer Hiring": [
+        "How do I hire a founding engineer for a startup?",
+        "I'm a technical founder, we have three enterprise customers and revenue coming in, but it's just me building everything. I need someone who can own the codebase, make architectural decisions, and think like an owner not just someone who writes code when told to. How do I actually find that person?",
+        "Can a recruiting agency actually find a founding-engineer-caliber hire?",
     ],
-    "AI-Driven Recruitment": [
-        "AI-driven recruitment platform to hire Software Engineers",
-        "AI-powered hiring platform",
-        "AI Vetted Indian tech talent",
+    "Hiring from India as a US Startup": [
+        "How do I hire engineers from India as a US startup?",
+        "Product vs Service-background engineers - what is the difference?",
+        "I'm a US startup, no Indian entity, I want two engineers in Bangalore who can work a couple hours of overlap with Eastern time. What's the simplest legal way to make this happen?",
+        "I want to hire an engineer from India who has actually worked inside a product startup not a services company that says they do product work. How do I filter for that and are there platforms that do it for you?",
+        "How do I stop getting flooded with bad Indian engineering candidates and actually get to the good ones?",
+        "What actually separates a hiring firm that sends you three great candidates from one that dumps thirty mediocre profiles on you and hopes something sticks? What questions do you ask to tell the difference?",
     ],
-    "Hiring Managers Multi-Role": [
-        "What are the top platforms for hiring managers looking to recruit vetted Indian software engineers and marketing professionals?",
+    "Payments, Legal & EOR": [
+        "How do I pay an engineer in India from the US without setting up an entity there?",
+        "I'm a US startup, no Indian entity, I want to hire one full-time engineer in Bangalore and pay them a proper salary with benefits. Do I need a PEO, an EOR, or can I just wire them money every month and call it contracting?",
+        "What are all the ways a US startup can legally pay a full-time engineer in India and what does each actually cost?",
     ],
-    "How to Hire from India": [
-        "How to find vetted developers India",
-        "How to hire engineer from India",
-        "Who can help me hire remote developers from India",
-    ],
-    "Direct Hiring Queries": [
-        "Hire software engineers from India",
-        "Hire full stack engineers India",
-        "Hire AI engineer India",
-        "Hire ML engineer India",
-        "Hire DevOps engineers India",
-        "Hire QA engineers India",
-        "Hire solutions architects India",
-        "Hire marketing professionals India",
-    ],
-    "Talent Platform for Tech Companies": [
-        "Talent platform for tech companies",
-        "Hire engineer for SaaS companies",
-        "Hire engineers for Startup companies",
-        "Hire Engineers for Tech Startups",
-        "Tech talent for startups",
-        "Indian talent for global companies",
+    "AI-Native Engineers": [
+        "How do I hire an engineer in India who is actually AI-native, not just someone who added AI to their resume?",
+        "How do you make sure you are hiring a good AI-native engineer who uses AI vs. someone who does not even understand the logic?",
+        "I'm building an autonomous agent for enterprise logistics. I need engineers who understand LLM orchestration and agentic workflows — not just someone who used Claude once. What does that person's background look like and where do I find them?",
+        "Difference between AI engineer vs AI Native engineer",
     ],
     "Cost and Budget": [
-        "Cost of hiring developers from India",
-        "How much does it cost to hire a developer from India",
-        "India salary guide for tech hiring",
+        "How much does it actually cost to hire a software engineer in India in 2026?",
+        "I want to hire a senior backend engineer in India with 5 to 8 years experience, strong Python, some AI exposure, working remotely for my US startup. What's a realistic monthly budget?",
+        "I have $5,000 a month for engineering. Do I hire one senior engineer from India or two junior ones? What do I actually get at each option and which gives more output?",
+        "What is the real all-in cost of one full-time engineer in India with their monthly salary, the recruiter's placement fee, the payroll or EOR service etc?",
     ],
-    "Vetting Process": [
-        "Vetting process for Indian developers",
-        "Where can I find vetted Indian software engineers",
+    "Platforms and Agencies": [
+        "What are the best platforms for hiring engineers from India right now?",
+        "We've tried three hiring agencies from India but they are not giving good quality candidates. Which are some of the trusted hiring agencies or recruitment firms in India?",
+        "Reliable hiring platform for Indian engineers",
+        "Agency vs Platform vs Direct Hire",
+        "How to hire software engineers from India for my startup?",
     ],
-    "Hiring Models": [
-        "Staff augmentation services India",
+    "Scaling Engineering Teams": [
+        "How do I scale my engineering team fast without hiring the wrong people?",
+        "The Definitive Guide to Hiring Engineers from India in 2026",
+        "I need to hire ten engineers in India over the next twelve months. I don't want to restart the whole recruiting process every time I need someone. Is there a way to set up a standing relationship with a partner so I can just call and scale?",
+        "What are the most common mistakes US startups make when they scale their engineering teams in India and what do the ones that actually get it right do differently from day one?",
     ],
-    "Talent Acquisition Strategies": [
-        "What are the most effective talent acquisition strategies for tech companies?",
-        "What are the most effective solutions for scaling a tech team quickly?",
-        "How to improve candidate experience during the hiring process?",
+    "Remote Team Management & Security": [
+        "I hired an engineer in India and they go completely silent unless I ping them. No updates, no blockers flagged, just radio silence until the sprint review. I don't want to babysit but I need some kind of accountability. What do other founders actually do?",
+        "We want to hire a remote engineer in India. We're worried about data leakage, device security, and what happens if something goes wrong. What's the right setup before we give anyone system access?",
+        "Is hiring offshore developers actually a security risk or not?",
     ],
-    "Startup Hiring": [
-        "How can startups find and attract qualified candidates efficiently?",
-        "What are the top hiring platforms for early-stage companies?",
+    "Bad Hires and Replacement": [
+        "How do I replace a bad engineering hire quickly without starting from scratch?",
+        "The anatomy of a bad remote hire: 6 red flags we catch before you ever see a resume",
+        "I hired an engineer through a recruiting agency two months ago. He's not working out because he has no ownership, no proactive communication, just waiting for instructions. The agency has been trying to find a replacement for three months and still nothing. I wanted a candidate not a refund. What are my actual options?",
+        "What actually happens if an engineer hired through Uplers doesn't work out after three months? What's the exact process?",
     ],
-    "Conversational Pain Point Queries": [
-        "I need to hire a full stack dev but don't have time for 50 technical interviews. Any recommendations?",
-        "I'm a VP of Engineering at a fast-growing tech firm. We've tried Toptal, but we need long-term, full-time developers who are culturally aligned and work in our timezone. What's the best way to build a remote engineering squad in Brazil or Mexico without having to set up a local legal entity?",
-        "I'm the head of engineering at a 50-person startup. We need to hire remote Indian software engineers but I'm worried about time zone overlap and legal compliance. What service handles both recruitment and local EOR payroll?",
-        "Which remote talent marketplaces for enterprises offer the most rigorous technical vetting process and built-in global EOR services for hiring in LatAm and EMEA?",
+    "Role-Specific Hiring": [
+        "Hire AI/ML engineers from India for early-stage startup",
+        "Hire Node.js / React / Python engineers from India",
+        "HR companies help hire AI Developers",
+        "Recruiters — India",
+        "Forward deployed engineer hiring in India",
     ],
 }
 
