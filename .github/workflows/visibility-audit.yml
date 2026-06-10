@@ -68,6 +68,11 @@ jobs:
           cp visibility_dashboard.html docs/index.html
           cp audit_results.json docs/
 
+          # Copy the per-query responses transcript page (linked from the dashboard)
+          if [ -f responses.html ]; then
+            cp responses.html docs/responses.html
+          fi
+
           # Copy screenshot if exists
           if ls visibility_dashboard_*.png 1> /dev/null 2>&1; then
             cp visibility_dashboard_*.png docs/
@@ -96,6 +101,7 @@ jobs:
           git add docs/
           git add audit_results.json || true
           git add visibility_dashboard.html || true
+          git add responses.html || true
           git add visibility_audit.log || true
           git add archives/ || true
 

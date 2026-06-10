@@ -2356,6 +2356,9 @@ def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict 
                 <div class="meta-item">Prompts: <span>{analysis["meta"]["unique_prompts"]}</span></div>
                 <div class="meta-item">Runs/Prompt: <span>{analysis["meta"]["runs_per_prompt"]}</span></div>
             </div>
+            <div style="margin-top:20px;">
+                <a href="responses.html" style="color:var(--accent);text-decoration:none;border:1px solid var(--border);padding:10px 20px;border-radius:8px;font-size:14px;">📝 View full responses per query →</a>
+            </div>
         </header>
         
         <!-- Overall Scores -->
@@ -3037,6 +3040,240 @@ def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict 
 
 
 # ============================================================================
+# RESPONSE TRANSCRIPT VIEW (per-query, with highlighted mentions + citations)
+# ============================================================================
+
+def render_response_html(text: str) -> str:
+    """Render a raw LLM response into safe HTML with brand mentions highlighted.
+
+    Light markdown (bold, headers, line breaks) plus inline highlighting of every
+    tracked platform — the target (Uplers) in accent green, competitors in amber.
+    """
+    import html as _html
+    if not text:
+        return '<em class="empty">— no response —</em>'
+    esc = _html.escape(text)
+    # Light markdown
+    esc = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', esc)
+    esc = re.sub(r'(?m)^\s*#{1,6}\s*(.+)$', r'<strong>\1</strong>', esc)
+    esc = esc.replace('\n', '<br>')
+
+    # Collect non-overlapping brand spans across all platform patterns
+    spans = []
+    for name, patterns in PLATFORM_PATTERNS.items():
+        is_target = (name == TARGET_COMPANY)
+        for p in patterns:
+            for m in p.finditer(esc):
+                spans.append((m.start(), m.end(), is_target))
+    spans.sort(key=lambda s: (s[0], -(s[1] - s[0])))
+
+    out, last = [], 0
+    for start, end, is_target in spans:
+        if start < last:
+            continue  # overlaps an already-wrapped span
+        out.append(esc[last:start])
+        cls = "mention target" if is_target else "mention competitor"
+        out.append(f'<span class="{cls}">{esc[start:end]}</span>')
+        last = end
+    out.append(esc[last:])
+    return ''.join(out)
+
+
+def generate_responses_html(results: list) -> str:
+    """Build a transcript page: each query, then each channel's answer with
+    highlighted brand mentions and the citations it pulled from."""
+    import html as _html
+
+    # Order prompts as defined; group representative run per (prompt, llm)
+    prompt_order = []
+    seen = set()
+    for intent, prompts in PROMPTS_BY_INTENT.items():
+        for pr in prompts:
+            if pr not in seen:
+                seen.add(pr)
+                prompt_order.append((intent, pr))
+    # include any prompts present in results but not in config (safety)
+    for r in results:
+        if r["prompt"] not in seen:
+            seen.add(r["prompt"])
+            prompt_order.append((r.get("intent", ""), r["prompt"]))
+
+    def representative(prompt, llm):
+        rows = [r for r in results if r["prompt"] == prompt and r["llm"] == llm]
+        for r in rows:
+            if (r.get("response") or "").strip():
+                return r
+        return rows[0] if rows else None
+
+    llms = [l for l in
+            ["ChatGPT", "ChatGPT-Search", "Claude", "Claude-Search",
+             "Gemini", "Gemini-Search", "Grok", "Perplexity"]
+            if any(r["llm"] == l for r in results)]
+
+    html_doc = f'''<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Responses — {TARGET_COMPANY}</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {{
+    --bg:#0a0a0f; --bg2:#12121a; --card:#1a1a24; --accent:#00ff88; --amber:#ffa502;
+    --text:#e8e8f0; --muted:#8b8b9e; --border:#2a2a3a;
+  }}
+  * {{ margin:0; padding:0; box-sizing:border-box; }}
+  body {{ font-family:'Space Grotesk',sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }}
+  .container {{ max-width:1200px; margin:0 auto; padding:40px 24px; }}
+  header {{ text-align:center; margin-bottom:40px; }}
+  .logo {{ font-size:13px; letter-spacing:4px; color:var(--accent); text-transform:uppercase; }}
+  h1 {{ font-size:38px; margin:8px 0; }}
+  .subtitle {{ color:var(--muted); }}
+  .topnav {{ text-align:center; margin-bottom:32px; }}
+  .topnav a {{ color:var(--accent); text-decoration:none; font-size:14px; border:1px solid var(--border); padding:8px 16px; border-radius:8px; }}
+  .legend {{ display:flex; gap:16px; justify-content:center; margin:20px 0 28px; font-size:13px; color:var(--muted); flex-wrap:wrap; }}
+  .picker {{ position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+       background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:36px; }}
+  .picker label {{ font-size:14px; color:var(--muted); font-weight:600; }}
+  .picker select {{ flex:1; min-width:280px; background:var(--bg); color:var(--text); border:1px solid var(--border);
+       border-radius:10px; padding:12px 14px; font-family:'Space Grotesk',sans-serif; font-size:15px; cursor:pointer; }}
+  .picker select:focus {{ outline:none; border-color:var(--accent); }}
+  .picker .qcount {{ font-size:12px; color:var(--muted); font-family:'JetBrains Mono',monospace; }}
+  .mention {{ padding:1px 5px; border-radius:5px; font-weight:600; }}
+  .mention.target {{ background:rgba(0,255,136,0.16); color:var(--accent); }}
+  .mention.competitor {{ background:rgba(255,165,2,0.13); color:var(--amber); }}
+  .qa {{ margin-bottom:56px; }}
+  .query-bubble {{ background:var(--bg2); border:1px solid var(--border); border-radius:14px;
+       padding:16px 20px; font-size:18px; font-weight:600; margin-bottom:8px; }}
+  .query-meta {{ color:var(--muted); font-size:12px; margin-bottom:20px; padding-left:4px; }}
+  .response-card {{ background:var(--card); border:1px solid var(--border); border-radius:14px;
+       margin-bottom:18px; overflow:hidden; }}
+  .resp-head {{ display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--border); background:var(--bg2); }}
+  .chan {{ font-weight:600; }}
+  .badge {{ font-size:11px; padding:3px 9px; border-radius:20px; font-family:'JetBrains Mono',monospace; }}
+  .badge.yes {{ background:rgba(0,255,136,0.15); color:var(--accent); }}
+  .badge.no {{ background:rgba(255,71,87,0.12); color:#ff6b7a; }}
+  .badge.pos {{ background:rgba(0,255,136,0.12); color:var(--accent); }}
+  .badge.neu {{ background:rgba(139,139,158,0.15); color:var(--muted); }}
+  .badge.neg {{ background:rgba(255,71,87,0.12); color:#ff6b7a; }}
+  .resp-body {{ display:grid; grid-template-columns: 1fr 300px; gap:0; }}
+  @media (max-width:820px) {{ .resp-body {{ grid-template-columns:1fr; }} }}
+  .resp-text {{ padding:20px 24px; font-size:15px; }}
+  .resp-text .empty {{ color:var(--muted); }}
+  .resp-cites {{ border-left:1px solid var(--border); padding:18px 18px; background:rgba(255,255,255,0.01); }}
+  .resp-cites h4 {{ font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:14px; }}
+  .cite {{ display:block; padding:10px 12px; border:1px solid var(--border); border-radius:10px; margin-bottom:10px;
+       text-decoration:none; color:var(--text); transition:border-color .15s; }}
+  .cite:hover {{ border-color:var(--accent); }}
+  .cite.target {{ border-color:rgba(0,255,136,0.4); background:rgba(0,255,136,0.05); }}
+  .cite .dom {{ font-size:12px; color:var(--muted); font-family:'JetBrains Mono',monospace; }}
+  .cite .ttl {{ font-size:13px; margin-top:3px; }}
+  .nocite {{ color:var(--muted); font-size:13px; }}
+</style></head>
+<body><div class="container">
+  <header>
+    <div class="logo">LLM Responses</div>
+    <h1>{TARGET_COMPANY}</h1>
+    <p class="subtitle">What each AI assistant actually said, per query</p>
+  </header>
+  <div class="topnav"><a href="visibility_dashboard.html">← Back to dashboard</a></div>
+  <div class="legend">
+    <span><span class="mention target">{TARGET_COMPANY}</span> = our brand</span>
+    <span><span class="mention competitor">Competitor</span> = tracked competitor</span>
+    <span>Citations = pages the model pulled from</span>
+  </div>
+'''
+
+    sent_badge = {"positive": ("pos", "positive"), "neutral": ("neu", "neutral"),
+                  "negative": ("neg", "negative")}
+
+    # Build each query's block, collecting (intent, prompt, html) so we can also
+    # drive a dropdown selector and show one query at a time.
+    qa_blocks = []
+    for intent, prompt in prompt_order:
+        cards = []
+        for llm in llms:
+            r = representative(prompt, llm)
+            if r is None:
+                continue
+            mentioned = r.get("target_mentioned")
+            ment_badge = f'<span class="badge yes">{TARGET_COMPANY} ✓</span>' if mentioned \
+                else f'<span class="badge no">{TARGET_COMPANY} ✗</span>'
+            sb = ""
+            if r.get("target_sentiment") in sent_badge:
+                cls, label = sent_badge[r["target_sentiment"]]
+                sb = f'<span class="badge {cls}">{label}</span>'
+
+            # Citations panel — only REAL web-search citations (not domains the
+            # model merely typed in prose). Base models therefore show none.
+            cite_urls = [u for u in (r.get("urls") or []) if u.get("source") == "citation"]
+            if cite_urls:
+                cites = ['<h4>Citations</h4>']
+                for u in cite_urls[:12]:
+                    tcls = "target" if u.get("is_target") else ""
+                    title = _html.escape(u.get("title") or u["url"])
+                    dom = _html.escape(u.get("domain") or "")
+                    cites.append(
+                        f'<a class="cite {tcls}" href="{_html.escape(u["url"])}" target="_blank">'
+                        f'<div class="dom">{dom}</div><div class="ttl">{title}</div></a>')
+                cites_html = "".join(cites)
+            else:
+                cites_html = '<h4>Citations</h4><div class="nocite">Answered from memory — no sources cited.</div>'
+
+            cards.append(f'''
+    <div class="response-card">
+      <div class="resp-head"><span class="chan">{llm}</span>{ment_badge}{sb}</div>
+      <div class="resp-body">
+        <div class="resp-text">{render_response_html(r.get("response") or "")}</div>
+        <div class="resp-cites">{cites_html}</div>
+      </div>
+    </div>''')
+
+        if not cards:
+            continue
+        idx = len(qa_blocks)
+        block = f'''
+  <div class="qa" id="qa{idx}" style="{'' if idx == 0 else 'display:none;'}">
+    <div class="query-bubble">{_html.escape(prompt)}</div>
+    <div class="query-meta">{_html.escape(intent)}</div>
+    {''.join(cards)}
+  </div>
+'''
+        qa_blocks.append((intent, prompt, block))
+
+    # Dropdown selector (grouped by intent via <optgroup>)
+    if qa_blocks:
+        select = ['<div class="picker"><label for="qpick">Select a query &nbsp;</label>',
+                  '<select id="qpick" onchange="showQA(this.value)">']
+        cur = None
+        for i, (intent, prompt, _) in enumerate(qa_blocks):
+            if intent != cur:
+                if cur is not None:
+                    select.append('</optgroup>')
+                select.append(f'<optgroup label="{_html.escape(intent)}">')
+                cur = intent
+            label = prompt if len(prompt) <= 95 else prompt[:94] + '…'
+            select.append(f'<option value="{i}">{_html.escape(label)}</option>')
+        if cur is not None:
+            select.append('</optgroup>')
+        select.append('</select>')
+        select.append(f'<span class="qcount">{len(qa_blocks)} queries</span></div>')
+        html_doc += ''.join(select)
+
+    html_doc += ''.join(b for _, _, b in qa_blocks)
+
+    html_doc += '''
+  <script>
+    function showQA(i) {
+      document.querySelectorAll('.qa').forEach(function(el){ el.style.display = 'none'; });
+      var t = document.getElementById('qa' + i);
+      if (t) t.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</div></body></html>'''
+    return html_doc
+
+
+# ============================================================================
 # SCREENSHOT CAPTURE
 # ============================================================================
 
@@ -3623,6 +3860,15 @@ def main():
     shutil.copy(dashboard_file, archive_dashboard_file)
     logger.info(f"✅ Dashboard saved to {dashboard_file}")
     logger.info(f"📁 Archived to {archive_dashboard_file}")
+
+    # Generate the per-query response transcript page
+    logger.info("📝 Generating response transcript page...")
+    responses_html = generate_responses_html(results)
+    responses_file = "responses.html"
+    with open(responses_file, "w") as f:
+        f.write(responses_html)
+    shutil.copy(responses_file, f"{ARCHIVE_DIR}/responses_{timestamp}.html")
+    logger.info(f"✅ Responses page saved to {responses_file}")
     
     # Capture screenshot
     screenshot_file = None
