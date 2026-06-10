@@ -61,6 +61,7 @@ import argparse
 from pathlib import Path
 from datetime import datetime, timedelta
 from collections import defaultdict
+from urllib.parse import urlparse, urlsplit, urlunsplit, parse_qsl, urlencode
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
@@ -132,6 +133,13 @@ ENABLE_PERPLEXITY = os.getenv("ENABLE_PERPLEXITY", "true").lower() == "true"  # 
 ENABLE_CHATGPT_SEARCH = os.getenv("ENABLE_CHATGPT_SEARCH", "true").lower() == "true"
 ENABLE_CLAUDE_SEARCH = os.getenv("ENABLE_CLAUDE_SEARCH", "true").lower() == "true"
 ENABLE_GEMINI_SEARCH = os.getenv("ENABLE_GEMINI_SEARCH", "true").lower() == "true"
+
+# Gemini-Search returns citations as opaque vertexaisearch redirect links. When enabled,
+# each unique redirect is resolved (HTTP HEAD) once per run to recover the true page URL.
+RESOLVE_GEMINI_REDIRECTS = os.getenv("RESOLVE_GEMINI_REDIRECTS", "true").lower() == "true"
+
+# Target domain(s) used to flag "our" pages in citation/URL tracking.
+TARGET_DOMAIN = "uplers.com"
 
 # Auto-skip settings: Skip an LLM if it fails this many times consecutively
 CONSECUTIVE_FAILURES_TO_SKIP = 3
@@ -749,11 +757,11 @@ def initialize_clients():
 # LLM QUERY FUNCTIONS (with retry logic)
 # ============================================================================
 
-def query_openai(prompt: str) -> str:
-    """Query OpenAI GPT-4.1 with retry logic."""
+def query_openai(prompt: str) -> tuple:
+    """Query OpenAI GPT-4.1. Returns (text, citations). Base model has no citations."""
     if not openai_client:
-        return ""
-    
+        return "", []
+
     def _query():
         response = openai_client.chat.completions.create(
             model="gpt-4.1",
@@ -764,16 +772,16 @@ def query_openai(prompt: str) -> str:
             max_tokens=1500,
             temperature=0.7
         )
-        return response.choices[0].message.content
-    
+        return response.choices[0].message.content, []
+
     return retry_with_backoff(_query)()
 
 
-def query_anthropic(prompt: str) -> str:
-    """Query Anthropic Claude with retry logic."""
+def query_anthropic(prompt: str) -> tuple:
+    """Query Anthropic Claude. Returns (text, citations). Base model has no citations."""
     if not anthropic_client:
-        return ""
-    
+        return "", []
+
     def _query():
         response = anthropic_client.messages.create(
             model="claude-sonnet-4-6",
@@ -783,28 +791,28 @@ def query_anthropic(prompt: str) -> str:
                 {"role": "user", "content": prompt}
             ]
         )
-        return response.content[0].text
-    
+        return response.content[0].text, []
+
     return retry_with_backoff(_query)()
 
 
-def query_gemini(prompt: str) -> str:
-    """Query Google Gemini with retry logic and improved error handling for JSON responses."""
+def query_gemini(prompt: str) -> tuple:
+    """Query Google Gemini. Returns (text, citations). Base model has no citations."""
     if not gemini_model:
-        return ""
-    
+        return "", []
+
     def _query():
         # Add delay to avoid rate limiting (Google free tier has strict limits)
         time.sleep(2)
-        
+
         try:
             response = gemini_model.generate_content(prompt)
-            
+
             # Check if the model actually returned a candidate
             if not response.candidates:
                 logger.warning("⚠️  Gemini: No candidates returned. Prompt may have been blocked.")
-                return ""
-            
+                return "", []
+
             # Check the finish reason (1 = STOP/success, 3 = SAFETY, etc.)
             finish_reason = response.candidates[0].finish_reason
             if finish_reason != 1:  # 1 corresponds to 'STOP' (Success)
@@ -813,26 +821,26 @@ def query_gemini(prompt: str) -> str:
                 if finish_reason == 3:  # SAFETY
                     safety_ratings = response.candidates[0].safety_ratings
                     logger.warning(f"⚠️  Gemini: Safety Ratings: {safety_ratings}")
-                return ""
-            
+                return "", []
+
             if response.candidates[0].content.parts:
-                return response.text
+                return response.text, []
             else:
                 logger.warning("⚠️  Gemini: Response parts are empty.")
-                return ""
-                
+                return "", []
+
         except Exception as e:
             logger.error(f"❌ Error querying Gemini: {e}")
-            return ""
-    
+            return "", []
+
     return retry_with_backoff(_query)()
 
 
-def query_grok(prompt: str) -> str:
-    """Query xAI Grok with retry logic."""
+def query_grok(prompt: str) -> tuple:
+    """Query xAI Grok. Returns (text, citations). Base model has no citations."""
     if not xai_api_key:
-        return ""
-    
+        return "", []
+
     def _query():
         headers = {
             "Authorization": f"Bearer {xai_api_key}",
@@ -854,16 +862,16 @@ def query_grok(prompt: str) -> str:
             timeout=120  # Increased timeout for Grok API
         )
         response.raise_for_status()
-        return response.json()["choices"][0]["message"]["content"]
-    
+        return response.json()["choices"][0]["message"]["content"], []
+
     return retry_with_backoff(_query)()
 
 
-def query_perplexity(prompt: str) -> str:
-    """Query Perplexity AI with retry logic."""
+def query_perplexity(prompt: str) -> tuple:
+    """Query Perplexity AI. Returns (text, citations) — Perplexity always cites sources."""
     if not perplexity_api_key:
-        return ""
-    
+        return "", []
+
     def _query():
         headers = {
             "Authorization": f"Bearer {perplexity_api_key}",
@@ -885,8 +893,19 @@ def query_perplexity(prompt: str) -> str:
             timeout=60
         )
         response.raise_for_status()
-        return response.json()["choices"][0]["message"]["content"]
-    
+        body = response.json()
+        text = body["choices"][0]["message"]["content"]
+        citations = []
+        # Newer API: structured search_results [{title, url, date}]
+        for sr in body.get("search_results") or []:
+            if isinstance(sr, dict) and sr.get("url"):
+                citations.append({"url": sr["url"], "title": sr.get("title")})
+        # Legacy/also-present: citations is a flat list of URL strings
+        for c in body.get("citations") or []:
+            if isinstance(c, str):
+                citations.append({"url": c, "title": None})
+        return text, citations
+
     return retry_with_backoff(_query)()
 
 # Curated platform patterns. Each value is a list of regex fragments that are
@@ -970,10 +989,10 @@ PLATFORM_PATTERNS = {
 }
 
 
-def query_openai_search(prompt: str) -> str:
-    """Query OpenAI GPT-4.1 with the Responses API's built-in web_search tool."""
+def query_openai_search(prompt: str) -> tuple:
+    """Query OpenAI GPT-4.1 with web_search. Returns (text, citations)."""
     if not openai_client:
-        return ""
+        return "", []
 
     def _query():
         instructions = (
@@ -987,25 +1006,34 @@ def query_openai_search(prompt: str) -> str:
             input=prompt,
             max_output_tokens=1500,
         )
-        # Prefer the consolidated `output_text` helper when available
+        # Text
         text = getattr(response, "output_text", None)
-        if text:
-            return text
-        chunks = []
+        if not text:
+            chunks = []
+            for item in getattr(response, "output", []) or []:
+                for piece in getattr(item, "content", []) or []:
+                    t = getattr(piece, "text", None)
+                    if t:
+                        chunks.append(t)
+            text = "\n".join(chunks)
+        # Citations: message content blocks carry url_citation annotations
+        citations = []
         for item in getattr(response, "output", []) or []:
             for piece in getattr(item, "content", []) or []:
-                t = getattr(piece, "text", None)
-                if t:
-                    chunks.append(t)
-        return "\n".join(chunks)
+                for ann in getattr(piece, "annotations", []) or []:
+                    url = getattr(ann, "url", None) or (ann.get("url") if isinstance(ann, dict) else None)
+                    title = getattr(ann, "title", None) or (ann.get("title") if isinstance(ann, dict) else None)
+                    if url:
+                        citations.append({"url": url, "title": title})
+        return text, citations
 
     return retry_with_backoff(_query)()
 
 
-def query_anthropic_search(prompt: str) -> str:
-    """Query Claude with the web_search tool enabled."""
+def query_anthropic_search(prompt: str) -> tuple:
+    """Query Claude with web_search. Returns (text, citations)."""
     if not anthropic_client:
-        return ""
+        return "", []
 
     def _query():
         response = anthropic_client.messages.create(
@@ -1023,24 +1051,39 @@ def query_anthropic_search(prompt: str) -> str:
             }],
         )
         chunks = []
+        citations = []
         for block in response.content:
+            btype = getattr(block, "type", None)
+            # Text blocks (and their inline citations)
             text = getattr(block, "text", None)
             if text:
                 chunks.append(text)
-        return "\n".join(chunks)
+            for cit in getattr(block, "citations", []) or []:
+                url = getattr(cit, "url", None)
+                title = getattr(cit, "title", None)
+                if url:
+                    citations.append({"url": url, "title": title})
+            # web_search_tool_result blocks list the fetched sources
+            if btype == "web_search_tool_result":
+                inner = getattr(block, "content", None) or []
+                for r in inner:
+                    url = getattr(r, "url", None)
+                    title = getattr(r, "title", None)
+                    if url:
+                        citations.append({"url": url, "title": title})
+        return "\n".join(chunks), citations
 
     return retry_with_backoff(_query)()
 
 
-def query_gemini_search(prompt: str) -> str:
-    """Query Gemini with Google Search grounding via the new google-genai SDK.
+def query_gemini_search(prompt: str) -> tuple:
+    """Query Gemini with Google Search grounding (new google-genai SDK).
 
-    The deprecated `google.generativeai` package does not support the
-    `google_search` grounding tool for Gemini 2.5, so this channel uses the
-    current `google-genai` SDK. Requires GOOGLE_API_KEY and ENABLE_GEMINI.
+    Returns (text, citations). Citations come from grounding_metadata; their URLs
+    are vertexaisearch redirects that get resolved downstream.
     """
     if not gemini_model:  # base Gemini must be available (shares the same key)
-        return ""
+        return "", []
 
     def _query():
         time.sleep(2)  # Google free tier rate limits
@@ -1050,7 +1093,7 @@ def query_gemini_search(prompt: str) -> str:
         except ImportError:
             logger.warning("⚠️  google-genai package not installed; skipping Gemini-Search. "
                            "Run: pip install google-genai")
-            return ""
+            return "", []
 
         try:
             client = google_genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
@@ -1065,10 +1108,22 @@ def query_gemini_search(prompt: str) -> str:
                     tools=[genai_types.Tool(google_search=genai_types.GoogleSearch())],
                 ),
             )
-            return response.text or ""
+            text = response.text or ""
+            citations = []
+            for cand in getattr(response, "candidates", []) or []:
+                gm = getattr(cand, "grounding_metadata", None)
+                for chunk in getattr(gm, "grounding_chunks", []) or []:
+                    web = getattr(chunk, "web", None)
+                    if web is None:
+                        continue
+                    uri = getattr(web, "uri", None)
+                    title = getattr(web, "title", None)  # usually the real domain
+                    if uri:
+                        citations.append({"url": uri, "title": title})
+            return text, citations
         except Exception as e:
             logger.error(f"❌ Error querying Gemini-Search: {e}")
-            return ""
+            return "", []
 
     return retry_with_backoff(_query)()
 
@@ -1107,6 +1162,166 @@ def extract_company_positions(text: str) -> list:
         if earliest is not None:
             first_offsets[name] = earliest
     return [name for name, _ in sorted(first_offsets.items(), key=lambda x: x[1])]
+
+
+# ============================================================================
+# URL / CITATION TRACKING
+# ============================================================================
+# Cache of resolved Gemini redirect URLs, deduped across a run (thread-safe enough:
+# worst case a redirect is resolved twice, which is harmless).
+_redirect_cache = {}
+
+# Match full URLs and bare domains in prose. TLD list kept tight to limit noise.
+_URL_RE = re.compile(
+    r'(https?://[^\s<>"\')\]]+'                          # full URLs
+    r'|\b(?:[a-z0-9-]+\.)+(?:com|io|dev|co|ai|tech|in|org|net)\b'  # bare domains
+    r'(?:/[^\s<>"\')\]]*)?)',                            # optional path on bare domains
+    re.IGNORECASE,
+)
+
+_TRACKING_PARAMS = {"ref", "fbclid", "gclid", "msclkid", "mc_cid", "mc_eid", "igshid"}
+
+
+def extract_urls(text: str) -> list:
+    """Extract candidate URLs / bare domains typed in prose."""
+    if not text:
+        return []
+    out = []
+    for m in _URL_RE.finditer(text):
+        raw = m.group(0).rstrip('.,);:]\'"')
+        # Skip obvious non-links (e.g. "e.g", version numbers handled by TLD list)
+        if len(raw) < 4:
+            continue
+        out.append(raw)
+    return out
+
+
+def normalize_url(raw: str) -> dict:
+    """Return {'url': canonical, 'domain': registrable-ish host} or None if unusable.
+
+    Lowercases host, drops www., strips tracking params, removes trailing slash,
+    keeps the full path (page-level is the goal), and adds a scheme to bare domains.
+    """
+    if not raw or not isinstance(raw, str):
+        return None
+    raw = raw.strip()
+    if not raw:
+        return None
+    if not re.match(r'^https?://', raw, re.IGNORECASE):
+        raw = "https://" + raw
+    try:
+        parts = urlsplit(raw)
+    except Exception:
+        return None
+    host = (parts.hostname or "").lower()
+    if host.startswith("www."):
+        host = host[4:]
+    if not host or "." not in host:
+        return None
+    # Strip tracking query params
+    query = urlencode([
+        (k, v) for k, v in parse_qsl(parts.query, keep_blank_values=False)
+        if k.lower() not in _TRACKING_PARAMS and not k.lower().startswith("utm_")
+    ])
+    path = parts.path or ""
+    if path == "/":
+        path = ""
+    elif path.endswith("/"):
+        path = path.rstrip("/")
+    canonical = urlunsplit(("https", host, path, query, ""))
+    return {"url": canonical, "domain": host}
+
+
+def resolve_redirect(url: str) -> str:
+    """Resolve a Gemini vertexaisearch redirect to its true destination URL.
+
+    Deduped/cached per run; best-effort with a short timeout. Returns the original
+    URL on any failure so callers can still fall back to domain-level data.
+    """
+    if not url:
+        return url
+    if "vertexaisearch.cloud.google.com" not in url and "grounding-api-redirect" not in url:
+        return url
+    if not RESOLVE_GEMINI_REDIRECTS:
+        return url
+    if url in _redirect_cache:
+        return _redirect_cache[url]
+    final = url
+    try:
+        resp = requests.head(url, allow_redirects=True, timeout=8)
+        if resp.url:
+            final = resp.url
+    except Exception:
+        try:
+            # Some redirects only fire on GET
+            resp = requests.get(url, allow_redirects=True, timeout=8, stream=True)
+            if resp.url:
+                final = resp.url
+            resp.close()
+        except Exception:
+            final = url
+    _redirect_cache[url] = final
+    return final
+
+
+def _is_target_domain(domain: str) -> bool:
+    return bool(domain) and (domain == TARGET_DOMAIN or domain.endswith("." + TARGET_DOMAIN))
+
+
+def build_url_records(response_text: str, citations: list) -> list:
+    """Merge structured citations + inline prose URLs into normalized, deduped records.
+
+    Each record: {url, domain, title, source ('citation'|'inline'), is_target}.
+    Citations win over inline duplicates. Gemini redirects are resolved to real pages.
+    """
+    records = {}  # canonical url -> record
+
+    def _add(raw_url, title, source):
+        if not raw_url:
+            return
+        # Resolve Gemini redirect links to their true destination first
+        if "grounding-api-redirect" in raw_url or "vertexaisearch.cloud.google.com" in raw_url:
+            resolved = resolve_redirect(raw_url)
+            if "vertexaisearch.cloud.google.com" in resolved or "grounding-api-redirect" in resolved:
+                # Resolution failed/disabled — fall back to the title, which Gemini
+                # populates with the real domain (e.g. "uplers.com").
+                if title and re.match(r'^(?:[a-z0-9-]+\.)+[a-z]{2,}$', title.strip().lower()):
+                    raw_url = title.strip().lower()
+                else:
+                    return  # opaque redirect with no usable domain — skip
+            else:
+                raw_url = resolved
+        norm = normalize_url(raw_url)
+        if not norm:
+            return
+        key = norm["url"]
+        existing = records.get(key)
+        if existing is None:
+            records[key] = {
+                "url": norm["url"],
+                "domain": norm["domain"],
+                "title": (title or "").strip() or None,
+                "source": source,
+                "is_target": _is_target_domain(norm["domain"]),
+            }
+        else:
+            # citation beats inline; fill in a title if we now have one
+            if source == "citation" and existing["source"] == "inline":
+                existing["source"] = "citation"
+            if title and not existing.get("title"):
+                existing["title"] = title.strip()
+
+    for c in citations or []:
+        if isinstance(c, dict):
+            _add(c.get("url"), c.get("title"), "citation")
+        elif isinstance(c, str):
+            _add(c, None, "citation")
+
+    for raw in extract_urls(response_text):
+        _add(raw, None, "inline")
+
+    return list(records.values())
+
 
 _SENTIMENT_POSITIVE = {
     "best", "top", "leading", "excellent", "strong", "recommended", "recommend",
@@ -1207,13 +1422,16 @@ def run_single_query(llm_name: str, prompt: str, intent: str, run_num: int):
             "target_mentioned": False,
             "target_rank_in_response": None,
             "target_sentiment": None,
+            "urls": [],
+            "citations": [],
             "timestamp": datetime.now().isoformat(),
             "skipped": True
         }
 
-    response = query_funcs[llm_name](prompt)
+    response, citations = query_funcs[llm_name](prompt)
     companies = extract_companies(response)
     ranked = extract_company_positions(response)
+    urls = build_url_records(response, citations)
 
     # Track failures for auto-skip
     if not response:
@@ -1239,6 +1457,8 @@ def run_single_query(llm_name: str, prompt: str, intent: str, run_num: int):
         "target_mentioned": target_mentioned,
         "target_rank_in_response": target_rank_in_response,
         "target_sentiment": target_sentiment,
+        "urls": urls,
+        "citations": citations,
         "timestamp": datetime.now().isoformat()
     }
 
@@ -1473,6 +1693,71 @@ def analyze_results(results: list) -> dict:
         analysis["by_llm"][llm]["avg_rank_when_mentioned"] = (
             round(sum(llm_ranks) / len(llm_ranks), 2) if llm_ranks else None
         )
+
+    # ------------------------------------------------------------------
+    # URL / page citation aggregation
+    # ------------------------------------------------------------------
+    def _aggregate_urls(rows):
+        """Aggregate per-result url records into url-level and domain-level views."""
+        by_url = {}      # canonical url -> aggregate
+        by_domain = {}   # domain -> aggregate
+        for row in rows:
+            llm = row.get("llm")
+            prompt = row.get("prompt")
+            seen_this_row = set()  # count once per response, not per duplicate
+            for rec in row.get("urls") or []:
+                url = rec.get("url")
+                domain = rec.get("domain")
+                if not url or url in seen_this_row:
+                    continue
+                seen_this_row.add(url)
+                u = by_url.setdefault(url, {
+                    "url": url, "domain": domain, "title": rec.get("title"),
+                    "count": 0, "channels": set(), "sources": set(),
+                    "sample_queries": [], "is_target": rec.get("is_target", False),
+                })
+                u["count"] += 1
+                if llm:
+                    u["channels"].add(llm)
+                if rec.get("source"):
+                    u["sources"].add(rec["source"])
+                if prompt and len(u["sample_queries"]) < 3 and prompt not in u["sample_queries"]:
+                    u["sample_queries"].append(prompt)
+                if not u.get("title") and rec.get("title"):
+                    u["title"] = rec["title"]
+
+                d = by_domain.setdefault(domain, {
+                    "domain": domain, "count": 0, "channels": set(),
+                    "is_target": rec.get("is_target", False),
+                })
+                d["count"] += 1
+                if llm:
+                    d["channels"].add(llm)
+
+        def _finalize(d):
+            out = dict(d)
+            out["channels"] = sorted(d["channels"])
+            if "sources" in d:
+                out["sources"] = sorted(d["sources"])
+            return out
+
+        urls_sorted = sorted(by_url.values(), key=lambda x: x["count"], reverse=True)
+        domains_sorted = sorted(by_domain.values(), key=lambda x: x["count"], reverse=True)
+        return [_finalize(u) for u in urls_sorted], [_finalize(d) for d in domains_sorted]
+
+    all_urls, all_domains = _aggregate_urls(results)
+    target_pages = [u for u in all_urls if u.get("is_target")]
+    analysis["pages"] = {
+        "target": target_pages,
+        "all_urls": all_urls,
+        "domains": all_domains,
+    }
+    analysis["overall"]["unique_target_pages"] = len(target_pages)
+
+    # Per-LLM count of distinct Uplers pages cited
+    for llm in analysis["meta"]["llms_tested"]:
+        llm_urls, _ = _aggregate_urls([r for r in results if r["llm"] == llm])
+        analysis["by_llm"][llm]["target_pages"] = len([u for u in llm_urls if u.get("is_target")])
 
     return analysis
 
@@ -2096,6 +2381,11 @@ def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict 
                 <div class="detail">Lower is better — where Uplers lands in lists</div>
             </div>
             <div class="score-card">
+                <div class="label">Uplers Pages Cited</div>
+                <div class="value accent">{analysis["overall"].get("unique_target_pages", 0)}</div>
+                <div class="detail">distinct {TARGET_DOMAIN} pages appearing in LLM answers</div>
+            </div>
+            <div class="score-card">
                 <div class="label">Intent Categories</div>
                 <div class="value">{len(analysis["by_intent"])}</div>
                 <div class="detail">{len(analysis["weak_spots"])} weak spots identified</div>
@@ -2536,14 +2826,101 @@ def generate_html_dashboard(analysis: dict, results: list, weekly_changes: dict 
             </div>
 '''
         html += '        </div>\n'
-    
+
+    # Pages / URLs Cited Section
+    pages = analysis.get("pages") or {}
+    target_pages = pages.get("target") or []
+    all_domains = pages.get("domains") or []
+    all_urls = pages.get("all_urls") or []
+
+    def _esc(s):
+        return (str(s or "")).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    def _short(url, n=70):
+        url = str(url or "")
+        return url if len(url) <= n else url[:n - 1] + "…"
+
+    if all_urls:
+        html += '''
+        <div class="section-header">
+            <h2>Pages Cited in LLM Answers</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="rankings-container">
+'''
+        # --- Uplers pages (primary) ---
+        html += f'''
+            <div class="rankings-card">
+                <div class="card-header">🎯 {TARGET_DOMAIN} Pages Cited</div>
+                <div class="rankings-list">
+'''
+        if target_pages:
+            for i, p in enumerate(target_pages[:30], start=1):
+                src = "/".join(p.get("sources", []))
+                chans = ", ".join(p.get("channels", []))
+                html += f'''
+                    <div class="ranking-item target">
+                        <div class="rank-num">{i}</div>
+                        <span class="company-name"><a href="{_esc(p["url"])}" target="_blank" style="color:inherit;text-decoration:none;">{_esc(_short(p["url"]))}</a><br><span style="font-size:11px;color:var(--text-muted);">{_esc(chans)} · {_esc(src)}</span></span>
+                        <span class="mention-count">{p["count"]}×</span>
+                    </div>
+'''
+        else:
+            html += '<div class="ranking-item"><span class="company-name" style="color:var(--text-muted);">No Uplers pages were cited in this run.</span></div>\n'
+        html += '''
+                </div>
+            </div>
+'''
+        # --- Top cited domains ---
+        html += '''
+            <div class="rankings-card">
+                <div class="card-header">Top Cited Domains</div>
+                <div class="rankings-list">
+'''
+        for i, d in enumerate(all_domains[:25], start=1):
+            is_t = "target" if d.get("is_target") else ""
+            tag = "us" if d.get("is_target") else "competitor"
+            html += f'''
+                    <div class="ranking-item {is_t}">
+                        <div class="rank-num">{i}</div>
+                        <span class="company-name">{_esc(d["domain"])} <span style="font-size:11px;color:var(--text-muted);">({tag})</span></span>
+                        <span class="mention-count">{d["count"]}×</span>
+                    </div>
+'''
+        html += '''
+                </div>
+            </div>
+'''
+        # --- Top cited URLs overall ---
+        html += '''
+            <div class="rankings-card">
+                <div class="card-header">Top Cited URLs (All)</div>
+                <div class="rankings-list">
+'''
+        for i, u in enumerate(all_urls[:25], start=1):
+            is_t = "target" if u.get("is_target") else ""
+            chans = ", ".join(u.get("channels", []))
+            html += f'''
+                    <div class="ranking-item {is_t}">
+                        <div class="rank-num">{i}</div>
+                        <span class="company-name"><a href="{_esc(u["url"])}" target="_blank" style="color:inherit;text-decoration:none;">{_esc(_short(u["url"]))}</a><br><span style="font-size:11px;color:var(--text-muted);">{_esc(chans)}</span></span>
+                        <span class="mention-count">{u["count"]}×</span>
+                    </div>
+'''
+        html += '''
+                </div>
+            </div>
+        </div>
+'''
+
     # Rankings
     html += '''
         <div class="section-header">
             <h2>Company Rankings</h2>
             <div class="line"></div>
         </div>
-        
+
         <div class="rankings-container">
             <div class="rankings-card">
                 <div class="card-header">Overall Rankings</div>
