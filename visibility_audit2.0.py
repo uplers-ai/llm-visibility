@@ -230,7 +230,7 @@ def retry_with_backoff(func, max_retries=MAX_RETRIES, delay=RETRY_DELAY):
                 
                 time.sleep(wait_time)
         logger.error(f"All {max_retries} attempts failed for {func.__name__}: {last_exception}")
-        return ""
+        return "", []
     return wrapper
 
 
