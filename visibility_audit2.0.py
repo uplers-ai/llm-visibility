@@ -738,7 +738,7 @@ def query_anthropic(prompt: str) -> tuple:
 
     def _query():
         response = anthropic_client.messages.create(
-            model="claude-sonnet-4-6",
+            model="claude-sonnet-5",
             max_tokens=1500,
             system=f"You are a helpful assistant. The user is based in {TARGET_REGION}. When recommending platforms or companies, please be specific and name them.",
             messages=[
@@ -991,7 +991,7 @@ def query_anthropic_search(prompt: str) -> tuple:
 
     def _query():
         response = anthropic_client.messages.create(
-            model="claude-sonnet-4-6",
+            model="claude-sonnet-5",
             max_tokens=1500,
             system=(
                 f"You are a helpful assistant. The user is based in {TARGET_REGION}. "
@@ -999,7 +999,7 @@ def query_anthropic_search(prompt: str) -> tuple:
             ),
             messages=[{"role": "user", "content": prompt}],
             tools=[{
-                "type": "web_search_20250305",
+                "type": "web_search_20260209",
                 "name": "web_search",
                 "max_uses": 5,
             }],
