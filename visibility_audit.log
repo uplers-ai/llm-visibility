@@ -16928,3 +16928,396 @@
 2026-07-12 19:49:43,763 - INFO -    Raw data: audit_results.json
 2026-07-12 19:49:43,763 - INFO -    Screenshot: visibility_dashboard_2026-07-12.png
 2026-07-12 19:49:43,763 - INFO -    Archives: archives/
+2026-07-19 18:27:13,069 - INFO - 
+============================================================
+2026-07-19 18:27:13,069 - INFO - 🚀 STARTING LLM VISIBILITY AUDIT
+2026-07-19 18:27:13,069 - INFO - ============================================================
+2026-07-19 18:27:13,069 - INFO - Target Company: Uplers
+2026-07-19 18:27:13,069 - INFO - Target Region: USA
+2026-07-19 18:27:13,069 - INFO - Prompt Categories: 3
+2026-07-19 18:27:13,069 - INFO - Total Prompts: 15
+2026-07-19 18:27:13,069 - INFO - Runs per Prompt: 3
+2026-07-19 18:27:13,069 - INFO - Archive Retention: 12 weeks
+2026-07-19 18:27:13,069 - INFO - Email Notifications: Enabled
+2026-07-19 18:27:13,107 - INFO - 📊 Found previous audit from 2026-07-12
+2026-07-19 18:27:13,172 - INFO - 📅 Found monthly comparison data from 2026-06-21
+2026-07-19 18:27:13,173 - INFO - 📅 Found monthly comparison data from 2026-06-21
+2026-07-19 18:27:13,420 - INFO - 📈 Found 8 historical data points for trend analysis
+2026-07-19 18:27:14,141 - INFO - ✅ OpenAI client initialized
+2026-07-19 18:27:14,657 - INFO - ✅ Anthropic client initialized
+2026-07-19 18:27:15,121 - INFO - ✅ Google Gemini client initialized with 2026 model (gemini-2.5-flash)
+2026-07-19 18:27:15,122 - INFO - ✅ xAI Grok client initialized
+2026-07-19 18:27:15,122 - INFO - ✅ Perplexity client initialized
+2026-07-19 18:27:18,292 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:27:21,035 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:27:21,442 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:27:25,173 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:27:25,602 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:27:26,034 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:27:29,010 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:27:29,184 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:27:30,009 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:27:30,439 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:27:38,152 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:27:42,230 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:27:44,739 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:27:48,458 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:27:50,503 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:28:00,085 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:28:00,429 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:28:11,249 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:28:22,239 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:28:26,456 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:28:27,405 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:28:29,352 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:28:30,778 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:28:30,970 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:28:33,340 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:28:34,546 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:28:35,277 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:28:38,752 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:28:40,988 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:28:41,728 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:28:49,560 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:28:51,771 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:28:52,393 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:28:54,031 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:29:11,399 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:29:20,200 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:29:46,441 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:29:48,485 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:29:58,747 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:31:00,733 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:31:58,041 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:32:46,450 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:32:46,877 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:34:58,951 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:35:01,054 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:35:07,365 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:35:07,481 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:35:13,594 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:35:13,970 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:35:16,687 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:35:19,259 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:35:20,511 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:35:23,884 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:35:32,647 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:35:33,555 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:35:43,102 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:35:44,628 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:35:49,332 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:35:52,982 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:36:01,922 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:36:55,937 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:37:59,762 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:38:01,842 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:38:02,950 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:38:05,317 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:38:05,684 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:38:09,350 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:38:10,468 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:38:10,847 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:38:11,173 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:38:16,574 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:38:17,267 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:38:18,226 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:38:21,997 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:38:25,130 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:38:32,038 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:38:32,929 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:38:36,161 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:38:43,348 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:39:05,805 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:39:07,878 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:39:11,431 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:39:11,655 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:39:14,472 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:39:15,558 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:39:15,715 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:39:17,020 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:39:20,939 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:39:22,033 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:39:25,145 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:39:33,112 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:39:45,541 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:39:52,082 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:40:27,916 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:40:38,385 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:41:00,310 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:41:00,794 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:41:03,603 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:41:10,076 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:41:19,200 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:41:32,445 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:41:36,345 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:41:38,181 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:41:43,047 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:41:45,059 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:41:45,098 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:41:45,155 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:41:48,566 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:41:53,333 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:41:58,397 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:42:01,434 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:42:18,797 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:42:20,823 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:42:32,171 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:42:48,641 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:42:59,800 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:44:03,431 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:44:52,938 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:44:55,030 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:44:57,735 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:44:59,054 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:45:02,971 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:45:04,912 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:45:05,262 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:45:05,660 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:45:08,082 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:45:10,793 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:45:12,863 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:45:17,411 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:45:25,740 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:45:28,671 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:45:29,924 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:45:44,314 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:46:04,170 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:46:23,472 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:46:33,165 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:46:37,455 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:48:14,848 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:48:59,026 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:49:01,125 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:49:03,796 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:49:04,652 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:49:07,859 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:49:10,356 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:49:10,600 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:49:12,817 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:49:14,760 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:49:17,900 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:49:24,478 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:49:28,619 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:49:35,051 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:49:36,657 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:49:45,198 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:50:08,054 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:50:15,549 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:51:31,418 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:52:00,303 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:52:02,382 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:52:06,736 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:52:07,485 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:52:08,122 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:52:11,782 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:52:12,684 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:52:15,530 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:52:15,847 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:52:16,297 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:52:22,372 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:52:24,662 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:52:28,251 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:52:31,710 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:52:32,084 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:52:37,606 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:52:44,734 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:53:02,366 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:53:32,244 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:53:34,322 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:53:39,027 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:53:39,713 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:53:45,789 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:53:45,815 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:53:48,128 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:53:48,829 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:53:51,591 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:53:54,298 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:53:54,467 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:54:05,618 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:54:09,089 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:54:20,954 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:54:26,782 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:54:48,530 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:55:00,871 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:55:22,858 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:56:11,340 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:56:13,412 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:56:17,783 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:56:17,909 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:56:23,161 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:56:23,242 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:56:24,591 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:56:25,293 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:56:26,659 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:56:28,056 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:56:32,298 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:56:38,520 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:56:38,630 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:56:38,631 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvhaKipLj5DruXNLpXS'}. Retrying in 5s...
+2026-07-19 18:56:41,757 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:56:43,762 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:56:43,763 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvhxF69a6a9DvAvsK5t'}. Retrying in 10s...
+2026-07-19 18:56:47,436 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:56:49,479 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:56:51,326 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-19 18:56:51,598 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:56:51,598 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBviXXpQzjRYXYfHWndm'}. Retrying in 5s...
+2026-07-19 18:56:53,860 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:56:53,861 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvihTNajZ3BA1pAdzXT'}. Retrying in 20s...
+2026-07-19 18:56:56,723 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:56:56,723 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBviudcBo18gL7T8Uj6N'}. Retrying in 10s...
+2026-07-19 18:57:00,358 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:57:06,844 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:57:06,844 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvjeypVEM77wwWBzSZZ'}. Retrying in 20s...
+2026-07-19 18:57:13,861 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvihTNajZ3BA1pAdzXT'}
+2026-07-19 18:57:26,845 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvjeypVEM77wwWBzSZZ'}
+2026-07-19 18:57:26,970 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:57:26,971 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvm8ybBgmH8yMH5jTXV'}. Retrying in 5s...
+2026-07-19 18:57:32,362 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:57:32,363 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvmXQTwobYu16XL3Y3H'}. Retrying in 10s...
+2026-07-19 18:57:42,538 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:57:42,539 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvnHM9vsrwJ7w3svj9Y'}. Retrying in 20s...
+2026-07-19 18:58:02,539 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvnHM9vsrwJ7w3svj9Y'}
+2026-07-19 18:58:02,691 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:02,691 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvomhzfx29hMi1hgqUk'}. Retrying in 5s...
+2026-07-19 18:58:02,821 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:02,822 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvomfX9LJG1bvZePkhw'}. Retrying in 5s...
+2026-07-19 18:58:04,580 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:58:06,907 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:58:07,057 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:58:07,907 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:07,908 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvp9d7UPLv45NCcdHHA'}. Retrying in 10s...
+2026-07-19 18:58:07,964 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:07,965 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvpAEpgaXtDUccguutu'}. Retrying in 10s...
+2026-07-19 18:58:10,021 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:58:11,299 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:58:13,486 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 18:58:16,061 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 18:58:16,797 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:58:18,028 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:18,029 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvpuJBTRBW3pX1qBx48'}. Retrying in 20s...
+2026-07-19 18:58:18,095 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:18,096 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvpuZZ6MMG9wrPsWi1X'}. Retrying in 20s...
+2026-07-19 18:58:28,285 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 18:58:37,806 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 18:58:38,029 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvpuJBTRBW3pX1qBx48'}
+2026-07-19 18:58:38,096 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvpuZZ6MMG9wrPsWi1X'}
+2026-07-19 18:58:38,096 - WARNING - ⏭️  Skipping Claude-Search for remaining queries (3 consecutive failures)
+2026-07-19 18:58:38,168 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:38,169 - WARNING - Attempt 1/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvrPQPkS8PzTPX8rqTw'}. Retrying in 5s...
+2026-07-19 18:58:43,301 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:43,301 - WARNING - Attempt 2/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvrmK2A9TTagmHAY2Vz'}. Retrying in 10s...
+2026-07-19 18:58:53,423 - INFO - HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-19 18:58:53,424 - WARNING - Attempt 3/3 failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvsWcWDJ5ZdHeng1c57'}. Retrying in 20s...
+2026-07-19 18:59:13,424 - ERROR - All 3 attempts failed for _query: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdBvsWcWDJ5ZdHeng1c57'}
+2026-07-19 18:59:13,424 - WARNING - ⏭️  Skipping Claude for remaining queries (3 consecutive failures)
+2026-07-19 18:59:50,914 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:00:04,916 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:00:12,852 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:00:19,539 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:00:19,842 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:00:20,633 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:00:24,785 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:00:25,131 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:00:25,905 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:00:32,425 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:00:35,864 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:00:36,012 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:00:57,778 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:01:07,916 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:01:27,419 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:01:32,300 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:01:32,471 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:01:37,321 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:01:38,149 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:01:42,758 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:01:44,442 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:01:50,934 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:03:06,293 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:03:08,334 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:03:28,601 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:04:12,018 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:04:14,063 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:04:30,497 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:05:32,694 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:05:34,745 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:05:37,433 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:05:37,749 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:05:43,174 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:05:43,659 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:05:43,765 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:05:48,761 - INFO - HTTP Request: POST https://api.openai.com/v1/responses "HTTP/1.1 200 OK"
+2026-07-19 19:05:49,976 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-07-19 19:05:50,594 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:05:57,377 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:06:02,969 - INFO - AFC is enabled with max remote calls: 10.
+2026-07-19 19:06:09,784 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-07-19 19:06:19,884 - INFO - 📊 Analyzing results...
+2026-07-19 19:06:19,902 - INFO - 🎯 Calculating goal progress...
+2026-07-19 19:06:19,902 - INFO - 📅 Getting monthly aggregates (last 3 months)...
+2026-07-19 19:06:20,340 - INFO - 📊 Found 3 months of historical data for comparison
+2026-07-19 19:06:20,410 - INFO - ✅ Results saved to audit_results.json
+2026-07-19 19:06:20,410 - INFO - 📁 Archived to archives/audit_results_2026-07-19.json
+2026-07-19 19:06:20,410 - INFO - 🎨 Generating HTML dashboard...
+2026-07-19 19:06:20,412 - INFO - ✅ Dashboard saved to visibility_dashboard.html
+2026-07-19 19:06:20,412 - INFO - 📁 Archived to archives/visibility_dashboard_2026-07-19.html
+2026-07-19 19:06:20,412 - INFO - 📝 Generating response transcript page...
+2026-07-19 19:06:21,359 - INFO - ✅ Responses page saved to responses.html
+2026-07-19 19:06:21,390 - INFO - 📸 Capturing screenshot of visibility_dashboard.html...
+2026-07-19 19:06:26,000 - INFO - ✅ Screenshot saved to visibility_dashboard_2026-07-19.png
+2026-07-19 19:06:26,001 - INFO - 📁 Screenshot archived to archives/visibility_dashboard_2026-07-19.png
+2026-07-19 19:06:26,002 - INFO - Removed old archive: audit_results_2026-04-26.json
+2026-07-19 19:06:26,002 - INFO - Removed old archive: visibility_dashboard_2026-04-26.html
+2026-07-19 19:06:26,002 - INFO - Removed old archive: visibility_dashboard_2026-04-26.png
+2026-07-19 19:06:26,002 - INFO - Cleaned up 3 old archive(s)
+2026-07-19 19:06:26,003 - INFO - 
+============================================================
+2026-07-19 19:06:26,003 - INFO - 📈 AUDIT SUMMARY
+2026-07-19 19:06:26,003 - INFO - ============================================================
+2026-07-19 19:06:26,003 - INFO - 🎯 Overall Visibility Score: 4.7%
+2026-07-19 19:06:26,003 - INFO - 🏆 Overall Ranking: #11 of 46
+2026-07-19 19:06:26,003 - INFO - 
+🎯 GOALS PROGRESS: 0/8 LLMs achieved target
+2026-07-19 19:06:26,003 - INFO -    --------------------------------------------------
+2026-07-19 19:06:26,003 - INFO -    🔴 Perplexity: 13.3% / 40% target (33.2% progress)
+2026-07-19 19:06:26,003 - INFO -    🔴 Claude: 4.4% / 25% target (17.6% progress)
+2026-07-19 19:06:26,003 - INFO -    🔴 Grok: 0.0% / 25% target (0.0% progress)
+2026-07-19 19:06:26,003 - INFO -    🔴 Gemini: 0.0% / 40% target (0.0% progress)
+2026-07-19 19:06:26,003 - INFO -    🔴 ChatGPT: 0.0% / 40% target (0.0% progress)
+2026-07-19 19:06:26,003 - INFO -    🔴 Claude-Search: 4.4% / 25% target (17.6% progress)
+2026-07-19 19:06:26,003 - INFO -    🔴 Gemini-Search: 15.6% / 40% target (39.0% progress)
+2026-07-19 19:06:26,003 - INFO -    🔴 ChatGPT-Search: 0.0% / 40% target (0.0% progress)
+2026-07-19 19:06:26,003 - INFO - 
+📊 Weekly Changes (since 2026-07-12):
+2026-07-19 19:06:26,003 - INFO -    📉 Visibility decreased by 7.3% this week
+2026-07-19 19:06:26,003 - INFO -    ⬇️ Ranking dropped by 5 position(s)
+2026-07-19 19:06:26,003 - INFO - 
+📅 Monthly Changes (since 2026-06-21):
+2026-07-19 19:06:26,003 - INFO -    📉 Visibility decreased by 6.2% this month
+2026-07-19 19:06:26,003 - INFO -    ⬇️ Ranking dropped by 3 position(s)
+2026-07-19 19:06:26,003 - INFO - 
+📅 Monthly Comparison (3 months):
+2026-07-19 19:06:26,003 - INFO -    Apr 2026: 11.7% visibility (Rank #6)
+2026-07-19 19:06:26,003 - INFO -    Jun 2026: 8.6% visibility (Rank #8)
+2026-07-19 19:06:26,003 - INFO -    Jul 2026: 11.1% visibility (Rank #7)
+2026-07-19 19:06:26,003 - INFO - 
+📊 By LLM:
+2026-07-19 19:06:26,003 - INFO -    Perplexity: 13.3% (↓8.9% this week) (6/45 queries)
+2026-07-19 19:06:26,004 - INFO -    Claude: 4.4% (↑4.4% this week) (2/45 queries)
+2026-07-19 19:06:26,004 - INFO -    Grok: 0.0% (↓2.2% this week) (0/45 queries)
+2026-07-19 19:06:26,004 - INFO -    Gemini: 0.0% (↓3.0% this week) (0/45 queries)
+2026-07-19 19:06:26,004 - INFO -    ChatGPT: 0.0% (↓5.9% this week) (0/45 queries)
+2026-07-19 19:06:26,004 - INFO -    Claude-Search: 4.4% (↑4.4% this week) (2/45 queries)
+2026-07-19 19:06:26,004 - INFO -    Gemini-Search: 15.6% (↓13.3% this week) (7/45 queries)
+2026-07-19 19:06:26,004 - INFO -    ChatGPT-Search: 0.0% (↓9.6% this week) (0/45 queries)
+2026-07-19 19:06:26,004 - INFO - 
+⚠️  Weak Spots:
+2026-07-19 19:06:26,004 - INFO -    - Founding Engineer: 3.1%
+2026-07-19 19:06:26,004 - INFO -    - Product vs Service Background (India): 3.3%
+2026-07-19 19:06:26,004 - INFO -    - Hiring Speed: 6.9%
+2026-07-19 19:06:26,004 - INFO - 
+✅ Audit complete!
+2026-07-19 19:06:26,004 - INFO -    Dashboard: visibility_dashboard.html
+2026-07-19 19:06:26,004 - INFO -    Raw data: audit_results.json
+2026-07-19 19:06:26,004 - INFO -    Screenshot: visibility_dashboard_2026-07-19.png
+2026-07-19 19:06:26,004 - INFO -    Archives: archives/
